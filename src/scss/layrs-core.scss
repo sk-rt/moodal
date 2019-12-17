@@ -1,0 +1,89 @@
+/****************************************
+
+         Layrs base
+
+*****************************************/
+
+.c-modal {
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    transition: 0.4s;
+    overflow: hidden;
+    pointer-events: none;
+    &.is-modal-vissible {
+        visibility: visible;
+        opacity: 1;
+    }
+    &.is-modal-loading {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.c-modal__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(#000, 0.7);
+}
+.c-modal__container {
+    position: relative;
+    z-index: 5;
+    height: 100%;
+    width: 100%;
+    pointer-events: auto;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.c-modal__inner {
+    padding: 40px 5%;
+    max-width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+.c-modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    pointer-events: auto;
+    cursor: pointer;
+}
+.c-modal__body {
+    flex: 0 0 auto;
+    width: 400px;
+    max-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 3;
+    opacity: 0;
+    background-color: #fff;
+    @at-root .is-modal-vissible & {
+        .c-modal__body {
+            opacity: 1;
+        }
+    }
+}
+.c-modal__content {
+    padding: 10px;
+}
+
+.is-show-modal {
+    overflow: hidden;
+}
