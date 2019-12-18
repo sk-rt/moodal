@@ -12,27 +12,26 @@ export enum LayrsState {
  * Initial Params
  */
 export interface LayrsInitialParam {
-    modalContainer: HTMLElement;
-    modalBodyAttr: string;
+    contentAttr: string;
     modalHideAttr: string;
     noBackgroundScroll: boolean;
     backgroundElement?: HTMLElement;
     waitContentLoaded: boolean;
-    bodyClasses: {
-        isVissible: string;
-        isLoading: string;
+    stateClasses: {
+        isVissible: string | string[];
+        isLoading: string | string[];
     };
 }
+export const nameSpace = `layrs`;
 export const defInitialParam: LayrsInitialParam = {
-    modalContainer: undefined,
-    modalBodyAttr: 'data-modal-content',
-    modalHideAttr: 'data-modal-close',
+    contentAttr: `data-${nameSpace}-content`,
+    modalHideAttr: `data-${nameSpace}-close`,
     noBackgroundScroll: false,
-    waitContentLoaded: true,
     backgroundElement: undefined,
-    bodyClasses: {
-        isVissible: 'is-modal-vissible',
-        isLoading: 'is-modal-loading'
+    waitContentLoaded: true,
+    stateClasses: {
+        isVissible: 'is-vissible',
+        isLoading: 'is-loading'
     }
 };
 

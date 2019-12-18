@@ -1,37 +1,38 @@
 import LayrsCore from '../core';
-import { LayrsState, LayrsCreateParam } from '../constants';
+import { LayrsState, LayrsCreateParam, nameSpace } from '../constants';
 /**
  * Controler
  */
+type GetContent = (arg: string) => Promise<HTMLElement> | HTMLElement;
 export interface LayrsControllerParam extends Partial<LayrsCreateParam> {
     controllerAttr: string;
+    getContent?: GetContent;
 }
 export default class LayrsController {
     param: LayrsControllerParam;
-    modalCore: LayrsCore;
-    getContent: (arg: string) => Promise<HTMLElement>;
-    constructor(modalCoreInstance: LayrsCore) {
-        this.modalCore = modalCoreInstance;
-    }
-    init(
-        getContent: LayrsController['getContent'],
+    core: LayrsCore;
+    constructor(
+        coreInstance: LayrsCore,
         param?: Partial<LayrsControllerParam>
     ) {
-        this.getContent = getContent;
+        this.core = coreInstance;
+        this.init(param);
+    }
+    init(param?: Partial<LayrsControllerParam>) {
         this.param = {
-            controllerAttr: 'data-modal-controll',
+            controllerAttr: `data-${nameSpace}-controll`,
             ...param
         };
-        this.addListner();
+        this.addControllListner();
     }
-    addListner(rootEl: Document | HTMLElement = document) {
-        const modalBtn = rootEl.querySelectorAll(
-            `[${this.param.controllerAttr}]`
+    addControllListner(rootEl: Document | HTMLElement = document) {
+        const ctrlElement: HTMLElement[] = [].slice.call(
+            rootEl.querySelectorAll(`[${this.param.controllerAttr}]`)
         );
-        if (!modalBtn) {
+        if (ctrlElement.length === 0) {
             return;
         }
-        [].slice.call(modalBtn).forEach((element: HTMLElement) => {
+        ctrlElement.forEach((element: HTMLElement) => {
             element.addEventListener('click', event => {
                 event.preventDefault();
                 const target = element.getAttribute(this.param.controllerAttr);
@@ -39,24 +40,25 @@ export default class LayrsController {
             });
         });
     }
+    hide() {
+        this.core.hide();
+    }
 
     async show(target: string) {
-        if (this.param && !this.getContent) {
-            // eslint-disable-next-line no-console
-            console.warn('Error: Please `.init()` before show()');
-            return;
-        }
-        if (!target) {
-            return;
-        }
-        this.modalCore.setState(LayrsState.LOADING);
+        this.core.setState(LayrsState.LOADING);
         try {
-            const content = await this.getContent(target);
-            this.modalCore.create(content, this.param);
+            if (!this.param || !this.param.getContent) {
+                throw new Error('Please run `init()` before `show()`');
+            }
+            if (!target) {
+                return;
+            }
+            const content = await this.param.getContent(target);
+            this.core.create(content, this.param);
         } catch (e) {
             // eslint-disable-next-line no-console
             console.error(e);
-            this.modalCore.hide();
+            this.core.hide();
         }
     }
 }

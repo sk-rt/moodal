@@ -1,8 +1,7 @@
-/**!
- *
- */
 import { disableScroll, enableScroll } from '../utils/disableScroll';
 import { contentLoadHandler } from '../utils/contentLoadHandler';
+import { classListAdd, classListRemove } from '../utils/classList';
+
 import {
     LayrsInitialParam,
     defInitialParam,
@@ -11,32 +10,41 @@ import {
     defCreateParam,
     HideQueue
 } from '../constants/';
-
+/**
+ * Layrs Core
+ */
 export default class LayrsCore {
     param: LayrsInitialParam;
     state: LayrsState;
-    modalBody!: HTMLElement;
+    container!: HTMLElement;
+    contentElement!: HTMLElement;
     hideQueues: HideQueue[] = [];
-    constructor(param?: Partial<LayrsInitialParam>) {
+    constructor(container: HTMLElement, param?: Partial<LayrsInitialParam>) {
         this.param = {
             ...defInitialParam,
             ...param
         };
-        if (!this.param.modalContainer) {
+        if (!container) {
             // eslint-disable-next-line no-console
-            console.warn('No modalContainer');
+            console.warn('No Container Element');
             return;
         }
-        this.modalBody = this.param.modalContainer.querySelector<HTMLElement>(
-            `[${this.param.modalBodyAttr}]`
+        this.container = container;
+        this.contentElement = this.container.querySelector<HTMLElement>(
+            `[${this.param.contentAttr}]`
         );
 
-        if (!this.modalBody) {
+        if (!this.contentElement) {
             // eslint-disable-next-line no-console
-            console.warn('No modalBody');
+            console.warn(
+                `No Content Element. Need a element has "${this.param.contentAttr}" attribute in Container Element`
+            );
             return;
         }
-        if (!this.param.backgroundElement) {
+        if (this.param.noBackgroundScroll && !this.param.backgroundElement) {
+            console.warn(`No Background Element.
+            if enable "noBackgroundScroll",you need set "backgroundElement" option
+            ex: backgroundElement: document.querySelector(".page-wrapper")`);
             this.param.noBackgroundScroll = false;
         }
         this.addHideEventListner();
@@ -60,34 +68,40 @@ export default class LayrsCore {
     setState(action: LayrsState) {
         switch (action) {
             case LayrsState.HIDDEN: {
-                this.param.modalContainer.setAttribute('aria-hidden', 'true');
-                this.param.modalContainer.classList.remove(
-                    this.param.bodyClasses.isLoading
+                this.container.setAttribute('aria-hidden', 'true');
+                classListRemove(
+                    this.container,
+                    this.param.stateClasses.isLoading
                 );
-                this.param.modalContainer.classList.remove(
-                    this.param.bodyClasses.isVissible
+                classListRemove(
+                    this.container,
+                    this.param.stateClasses.isVissible
                 );
+
                 this.state = LayrsState.HIDDEN;
                 break;
             }
             case LayrsState.LOADING: {
-                this.param.modalContainer.classList.remove(
-                    this.param.bodyClasses.isVissible
+                classListRemove(
+                    this.container,
+                    this.param.stateClasses.isVissible
                 );
-                this.param.modalContainer.classList.add(
-                    this.param.bodyClasses.isLoading
-                );
+                classListAdd(this.container, this.param.stateClasses.isLoading);
+
                 this.state = LayrsState.LOADING;
                 break;
             }
             case LayrsState.VISSIBLE: {
-                this.param.modalContainer.setAttribute('aria-hidden', 'false');
-                this.param.modalContainer.classList.remove(
-                    this.param.bodyClasses.isLoading
+                this.container.setAttribute('aria-hidden', 'false');
+                classListRemove(
+                    this.container,
+                    this.param.stateClasses.isLoading
                 );
-                this.param.modalContainer.classList.add(
-                    this.param.bodyClasses.isVissible
+                classListAdd(
+                    this.container,
+                    this.param.stateClasses.isVissible
                 );
+
                 this.state = LayrsState.VISSIBLE;
                 break;
             }
@@ -110,13 +124,13 @@ export default class LayrsCore {
             noBackgroundScroll: this.param.noBackgroundScroll,
             ...createParam
         };
-        this.modalBody.innerHTML = '';
+        this.contentElement.innerHTML = '';
         this.setState(LayrsState.LOADING);
         const _content_get =
             _createParam.contentCreated(content, this) || content;
         _createParam.beforeAppend(_content_get, this);
         // Append
-        this.modalBody.appendChild(_content_get);
+        this.contentElement.appendChild(_content_get);
         if (this.param.noBackgroundScroll) {
             disableScroll(this.param.backgroundElement);
         }
@@ -132,7 +146,7 @@ export default class LayrsCore {
         // Load and Show
 
         if (_createParam.waitContentLoaded) {
-            contentLoadHandler(this.modalBody)
+            contentLoadHandler(this.contentElement)
                 .then(() => {
                     const _content_ready =
                         _createParam.contentLoaded(_content_get, this) ||
@@ -163,7 +177,7 @@ export default class LayrsCore {
     }
     hide() {
         this.hideQueues.forEach(func => func.beforeHideQueue());
-        this.modalBody.innerHTML = '';
+        this.contentElement.innerHTML = '';
         this.setState(LayrsState.HIDDEN);
         enableScroll(this.param.backgroundElement);
         this.hideQueues.forEach(func => func.afterHideQueue());

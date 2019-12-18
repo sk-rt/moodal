@@ -1,5 +1,5 @@
 /**
- *
+ * Fix scroll element
  */
 import getScrollOffset from './getScrollOffset';
 let scrollTop = 0;
@@ -12,6 +12,13 @@ export const disableScroll = (wrapperEl: HTMLElement, addClass = '') => {
     if (addClass) wrapperEl.classList.add(addClass);
 };
 export const enableScroll = (wrapperEl: HTMLElement, removeClass = '') => {
+    if (
+        !wrapperEl ||
+        !('style' in wrapperEl) ||
+        wrapperEl.style.position !== 'fixed'
+    ) {
+        return;
+    }
     wrapperEl.style.position = '';
     wrapperEl.style.left = '';
     wrapperEl.style.right = '';

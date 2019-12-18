@@ -1,12 +1,12 @@
 /**
- * img,iframeの読み込み監視
+ * monitoring img and iframe loading
  * @param content
  * @param timeOut
  * @return Promise
  */
 export const contentLoadHandler = (
     content: HTMLElement | Document,
-    timeOut = 2000
+    timeOut = 4000
 ): Promise<null> => {
     const mediaEls: (HTMLImageElement | HTMLIFrameElement)[] = [].slice.call(
         content.querySelectorAll('img,iframe')
