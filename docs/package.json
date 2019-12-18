@@ -1,6 +1,7 @@
 {
   "name": "layrs-docs",
   "version": "0.0.1",
+  "description": "document for lars",
   "main": "index.js",
   "author": "sk-rt",
   "license": "MIT",

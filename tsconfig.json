@@ -7,7 +7,7 @@
         "module": "es6",
         "moduleResolution": "node",
         "declaration": true,
-        "declarationDir": "dist/"
+        "declarationDir": "lib/types/"
     },
     "include": ["src/**/*"],
     "exclude": [

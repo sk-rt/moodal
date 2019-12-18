@@ -35,7 +35,7 @@ const modalInit = () => {
             return content;
         }
     });
-    modalCtrl.show('content01');
+    // modalCtrl.show('content01');
 
     const modalAcyncCtrl = modal.addController({
         controllerAttr: 'data-modal-acync',

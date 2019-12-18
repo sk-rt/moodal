@@ -13,7 +13,7 @@ export default class Layrs {
     layrsCore: LayrsCore;
     initialParam: LayrsInitialParam;
     container: HTMLElement;
-    constructor(container: HTMLElement, param: Partial<LayrsInitialParam>) {
+    constructor(container: HTMLElement, param?: Partial<LayrsInitialParam>) {
         this.layrsCore = new LayrsCore(container, param);
         this.initialParam = this.layrsCore.param;
         this.container = container;
