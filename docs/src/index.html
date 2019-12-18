@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <title>Layrs-js</title>
+
+        <meta name="description" content="xxx" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="xx" />
+        <meta property="og:title" content="xxxxx" />
+        <meta property="og:description" content="xxx" />
+
+        <meta property="og:site_name" content="xxx" />
+        <meta name="twitter:card" content="summary" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"
+        />
+        <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+    </head>
+    <body>
+        <div class="l-wrapper">
+            <h1 class="title is-1">Layrs</h1>
+
+            <section class="section">
+                <div class="navs">
+                    <button
+                        type="button"
+                        class="button is-primary is-fullwidth is-medium"
+                        data-modal-target="content01"
+                    >
+                        Open
+                    </button>
+                    <button
+                        type="button"
+                        class="button is-primary is-fullwidth is-medium"
+                        data-modal-acync="content02"
+                    >
+                        Open
+                    </button>
+                </div>
+            </section>
+        </div>
+        <template id="content01">
+            <div>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua.<br />
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis
+                    aute<br />
+                    irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
+                    cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum.Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua.<br />
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis
+                    aute<br />
+                    irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
+                    cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum.Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua.<br />
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis
+                    aute<br />
+                    irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
+                    cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum.
+                </p>
+            </div>
+        </template>
+        <template id="content02">
+            <div>
+                <p>
+                    <img src="http://lorempixel.com/400/200/sports/" alt="" />
+                    irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
+                    cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum.
+                </p>
+            </div>
+        </template>
+        <div class="c-layrs" tabindex="-1" aria-hidden="true">
+            <div class="c-layrs__bg"></div>
+            <div class="c-layrs__loader">...Loading</div>
+            <div class="c-layrs__container">
+                <div class="c-layrs__overlay" data-layrs-close></div>
+                <div class="c-layrs__inner">
+                    <div class="c-layrs__body">
+                        <button
+                            class="c-layrs__close"
+                            type="button"
+                            aria-label="Close"
+                            data-layrs-close
+                        >
+                            ❌
+                        </button>
+                        <div class="c-layrs__content" data-layrs-content></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

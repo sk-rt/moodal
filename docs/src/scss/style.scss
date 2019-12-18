@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+
+
+/****************************************
+
+          General Setting
+
+*****************************************/
+
+body {
+  font-size: 14px;
+  line-height: 1.9em;
+  font-weight: 400;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Avenir,
+    "Avenir Next", "Hiragino Sans", "ヒラギノ角ゴシック", "ヒラギノ角ゴ ProN W3",
+    "Hiragino Kaku Gothic ProN", "游ゴシック", YuGothic, "メイリオ", Meiryo,
+    sans-serif;
+  letter-spacing: 0.04em;
+  -moz-font-feature-settings: "palt";
+  -webkit-font-feature-settings: "palt";
+  font-feature-settings: "palt";
+}
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
