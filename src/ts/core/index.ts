@@ -127,61 +127,68 @@ export default class MoodalCore {
         };
         this.contentElement.innerHTML = '';
         this.setState(MoodalState.LOADING);
-        const _content_created =
-            (await _createParam.contentCreated(content, this)) || content;
-        if (_content_created) _createParam.beforeAppend(_content_created, this);
+        let _content = content;
+
         // Append
-        this.contentElement.appendChild(_content_created);
+        _content = (await _createParam.beforeAppend(_content)) || _content;
+        this.contentElement.appendChild(_content);
         if (this.param.noBackgroundScroll) {
             disableScroll(this.param.backgroundElement);
         }
-        _createParam.afterAppend(_content_created, this);
+        _content = (await _createParam.afterAppend(_content)) || _content;
         this.enqueueHideHooks({
             beforeHideQueue: () => {
-                _createParam.beforeHide(_content_created, this);
+                return _createParam.beforeHide(_content);
             },
             afterHideQueue: () => {
-                _createParam.afterHide(_content_created, this);
+                return _createParam.afterHide(_content);
             }
         });
         // Load and Show
         if (_createParam.waitContentLoaded) {
             try {
                 await contentLoadHandler(this.contentElement);
-                const _content_loaded =
-                    (await _createParam.contentLoaded(
-                        _content_created,
-                        this
-                    )) || _content_created;
+
                 if (!_createParam.manualShow) {
-                    this.show(_content_loaded, _createParam);
+                    this.show(_content, _createParam);
                 }
-                this.addHideEventListner(_content_loaded);
+                this.addHideEventListner(_content);
             } catch (error) {
                 console.warn(error);
                 this.hide();
             }
         } else {
-            const _content_loaded =
-                (await _createParam.contentLoaded(_content_created, this)) ||
-                _content_created;
             if (!_createParam.manualShow) {
-                this.show(_content_loaded, _createParam);
+                this.show(_content, _createParam);
             }
-            this.addHideEventListner(_content_loaded);
+            this.addHideEventListner(_content);
         }
     }
-    show(content: HTMLElement, createParam: MoodalCreateParam) {
-        createParam.beforeShow(content, this);
+    async show(content: HTMLElement, createParam: MoodalCreateParam) {
+        await createParam.beforeShow(content);
         this.setState(MoodalState.VISSIBLE);
-        createParam.afterShow(content, this);
+        await createParam.afterShow(content);
     }
-    hide() {
-        this.hideQueues.forEach(func => func.beforeHideQueue());
+    async hide() {
+        await Promise.all(
+            this.hideQueues.map(func => {
+                return new Promise<void>(async resolve => {
+                    await func.beforeHideQueue();
+                    resolve();
+                });
+            })
+        );
         this.contentElement.innerHTML = '';
         this.setState(MoodalState.HIDDEN);
         enableScroll(this.param.backgroundElement);
-        this.hideQueues.forEach(func => func.afterHideQueue());
+        await Promise.all(
+            this.hideQueues.map(func => {
+                return new Promise<void>(async resolve => {
+                    await func.afterHideQueue();
+                    resolve();
+                });
+            })
+        );
         this.hideQueues = [];
     }
 }

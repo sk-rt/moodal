@@ -50,6 +50,7 @@ $namespace: moodal;
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
+    color: #fff;
     @at-root .is-loading & {
         opacity: 1;
         visibility: visible;

@@ -38,20 +38,19 @@ export const defInitialParam: MoodalInitialParam = {
 /**
  * Create Params
  */
-type callback = (content: HTMLElement, modalCore: MoodalCore) => void;
-type hook = (
-    content: HTMLElement,
-    modalCore: MoodalCore
+// type callback = (content: HTMLElement, modalCore: MoodalCore) => void;
+type fillter = (
+    content: HTMLElement
 ) => HTMLElement | Promise<HTMLElement> | void;
+type callback = (content: HTMLElement) => Promise<void> | void;
+
 export interface MoodalCallbacks {
-    beforeAppend: callback;
-    afterAppend: callback;
+    beforeAppend: fillter;
+    afterAppend: fillter;
     beforeShow: callback;
     afterShow: callback;
     beforeHide: callback;
     afterHide: callback;
-    contentCreated: hook;
-    contentLoaded: hook;
 }
 export interface MoodalCreateParam extends MoodalCallbacks {
     waitContentLoaded: boolean | null;
@@ -67,14 +66,12 @@ export const defCreateParam: MoodalCreateParam = {
     beforeShow: noop,
     afterShow: noop,
     beforeHide: noop,
-    afterHide: noop,
-    contentCreated: content => content,
-    contentLoaded: content => content
+    afterHide: noop
 };
 /**
  * Callback Queues On Hidden
  */
 export interface HideQueue {
-    beforeHideQueue: () => void;
-    afterHideQueue: () => void;
+    beforeHideQueue: () => Promise<void> | void;
+    afterHideQueue: () => Promise<void> | void;
 }
