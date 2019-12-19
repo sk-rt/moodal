@@ -1,30 +1,26 @@
 import '../scss/style.scss';
-import '../../../dist/css/moodal-core.css';
+import '../../../lib/css/moodal-core.css';
+import axios from 'axios';
 
-import Moodal from '../../../dist/esm/index.mjs';
-import * as all from '../../../dist/esm/index.mjs';
+import Moodal from '../../../';
 
 document.addEventListener(
     'DOMContentLoaded',
     () => {
         modalInit();
-        console.log(all);
     },
     false
 );
 
 const modalInit = () => {
     const modal = new Moodal(document.querySelector('.c-moodal'), {
-        noBackgroundScroll: false,
+        noBackgroundScroll: true,
         backgroundElement: document.querySelector('.l-wrapper')
     });
     console.log(modal);
 
     const modalCtrl = modal.addController({
         controllerAttr: 'data-modal-target',
-        noBackgroundScroll: true,
-        backgroundElement: document.querySelector('.l-wrapper'),
-
         getContent: arg => {
             const wrapper = document.getElementById(arg);
             if (!wrapper) {
@@ -40,25 +36,39 @@ const modalInit = () => {
     const modalAcyncCtrl = modal.addController({
         controllerAttr: 'data-modal-acync',
         waitContentLoaded: true,
-        getContent: arg => {
-            return new Promise((resolve, rejects) => {
-                const wrapper = document.getElementById(arg);
-                if (!wrapper) {
-                    rejects(new Error('No Target!'));
+        getContent: trigger => {
+            return new Promise(async (resolve, rejects) => {
+                try {
+                    const res = await axios.get(trigger, {
+                        responseType: 'document'
+                    });
+                    const content = res.data.querySelector('#content');
+                    if (content) {
+                        resolve(content);
+                    } else {
+                        rejects(new Error('NO Element'));
+                    }
+                } catch (error) {
+                    console.log(error);
+                    rejects(error);
                 }
-                const content = document.createElement('div');
-                content.innerHTML = wrapper.innerHTML;
-                resolve(content);
             });
         },
-        beforeAppend: () => {
-            document.body.classList.add('c-content-modal');
+        beforeAppend: context => {
+            return new Promise((resolve, rejects) => {
+                setTimeout(() => {
+                    console.log('before:append', context);
+                    resolve(context);
+                }, 100);
+            });
         },
-        beforeShow: content => {
-            modalAcyncCtrl.addControllListner(content);
+
+        beforeShow: ({ content }) => {
+            console.log('before:show');
+            content.querySelector('img').classList.add('test');
         },
-        afterHide: () => {
-            document.body.classList.remove('c-content-modal');
+        beforeHide: () => {
+            console.log('before:Hide');
         }
     });
 };
