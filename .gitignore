@@ -1,0 +1,17 @@
+node_modules
+.sass-cache
+.idea
+.vscode
+.DS_Store
+
+# Directory
+
+lib
+dist
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

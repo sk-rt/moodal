@@ -1,0 +1,21 @@
+node_modules
+.sass-cache
+.idea
+.vscode
+.DS_Store
+
+# Directory
+dist
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# docs
+docs/
+
+.eslintrc
+.prettierrc

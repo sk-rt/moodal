@@ -1,0 +1,43 @@
+{
+  "name": "moodal-docs",
+  "version": "0.0.1",
+  "description": "document for lars",
+  "main": "index.js",
+  "author": "sk-rt",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "npm-run-all -p serve watch:*",
+    "dist": "npm-run-all clean-dist dist:*",
+    "dist:webpack": "NODE_ENV=production webpack -p",
+    "build:webpack": "webpack",
+    "serve": "webpack-dev-server",
+    "watch:static": "cpx 'src/static/**/!(__*)' public/index_assets/ --watch --clean",
+    "dist:static": "cpx 'src/static/**/!(__*)' dist/index_assets/ ",
+    "clean-dist": "rimraf dist"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "autoprefixer": "^9.7.3",
+    "babel-loader": "^8.0.6",
+    "browser-sync": "^2.26.7",
+    "cpx": "^1.5.0",
+    "css-loader": "^3.2.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.13.0",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.12.4",
+    "postcss": "^7.0.23",
+    "postcss-loader": "^3.0.0",
+    "rimraf": "^3.0.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {}
+}
