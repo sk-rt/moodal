@@ -1,39 +1,43 @@
-import LayrsCore from '../core';
-import { LayrsState, LayrsCreateParam, nameSpace } from '../constants';
+import MoodalCore from '../core';
+import { MoodalState, MoodalCreateParam } from '../constants';
+import simpleAddListener from '../utils/simpleAddListener';
 /**
  * Controler
  */
 type GetContent = (arg: string) => Promise<HTMLElement> | HTMLElement;
-export interface LayrsControllerParam extends Partial<LayrsCreateParam> {
-    controllerAttr: string;
+export interface MoodalControllerParam extends Partial<MoodalCreateParam> {
+    controllerAttr?: string;
     getContent?: GetContent;
 }
-export default class LayrsController {
-    param: LayrsControllerParam;
-    core: LayrsCore;
+export default class MoodalController {
+    param: MoodalControllerParam;
+    core: MoodalCore;
     constructor(
-        coreInstance: LayrsCore,
-        param?: Partial<LayrsControllerParam>
+        coreInstance: MoodalCore,
+        param?: Partial<MoodalControllerParam>
     ) {
         this.core = coreInstance;
         this.init(param);
     }
-    init(param?: Partial<LayrsControllerParam>) {
+    init(param?: Partial<MoodalControllerParam>) {
         this.param = {
-            controllerAttr: `data-${nameSpace}-controll`,
+            controllerAttr: ``,
             ...param
         };
         this.addControllListner();
     }
     addControllListner(rootEl: Document | HTMLElement = document) {
+        if (!this.param.controllerAttr) {
+            return;
+        }
         const ctrlElement: HTMLElement[] = [].slice.call(
             rootEl.querySelectorAll(`[${this.param.controllerAttr}]`)
         );
         if (ctrlElement.length === 0) {
             return;
         }
-        ctrlElement.forEach((element: HTMLElement) => {
-            element.addEventListener('click', event => {
+        return ctrlElement.map((element: HTMLElement) => {
+            return simpleAddListener(element, 'click', event => {
                 event.preventDefault();
                 const target = element.getAttribute(this.param.controllerAttr);
                 this.show(target);
@@ -45,7 +49,7 @@ export default class LayrsController {
     }
 
     async show(target: string) {
-        this.core.setState(LayrsState.LOADING);
+        this.core.setState(MoodalState.LOADING);
         try {
             if (!this.param || !this.param.getContent) {
                 throw new Error('Please run `init()` before `show()`');

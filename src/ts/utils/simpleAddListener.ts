@@ -4,7 +4,7 @@ export interface EventOptions {
     passive?: boolean;
 }
 export type RemoveListener = () => void;
-const addListener = (
+const simpleAddListener = (
     target: Window | Document | Element,
     eventType: string,
     listener: EventListener,
@@ -24,4 +24,4 @@ const addListener = (
         target.removeEventListener(eventType, listener, eventOptions);
     };
 };
-export default addListener;
+export default simpleAddListener;
