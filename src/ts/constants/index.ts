@@ -1,9 +1,9 @@
-import LayrsCore from '../core';
+import MoodalCore from '../core';
 import noop from '../utils/noop';
 /**
- * Layrs State
+ * State
  */
-export enum LayrsState {
+export enum MoodalState {
     HIDDEN = 'HIDDEN',
     LOADING = 'LOADING',
     VISSIBLE = 'VISSIBLE'
@@ -11,7 +11,7 @@ export enum LayrsState {
 /**
  * Initial Params
  */
-export interface LayrsInitialParam {
+export interface MoodalInitialParam {
     contentAttr: string;
     modalHideAttr: string;
     noBackgroundScroll: boolean;
@@ -22,8 +22,8 @@ export interface LayrsInitialParam {
         isLoading: string | string[];
     };
 }
-export const nameSpace = `layrs`;
-export const defInitialParam: LayrsInitialParam = {
+export const nameSpace = `moodal`;
+export const defInitialParam: MoodalInitialParam = {
     contentAttr: `data-${nameSpace}-content`,
     modalHideAttr: `data-${nameSpace}-close`,
     noBackgroundScroll: false,
@@ -38,9 +38,9 @@ export const defInitialParam: LayrsInitialParam = {
 /**
  * Create Params
  */
-type callback = (content: HTMLElement, modalCore: LayrsCore) => void;
-type hook = (content: HTMLElement, modalCore: LayrsCore) => HTMLElement | void;
-export interface LayrsCallbacks {
+type callback = (content: HTMLElement, modalCore: MoodalCore) => void;
+type hook = (content: HTMLElement, modalCore: MoodalCore) => HTMLElement | void;
+export interface MoodalCallbacks {
     beforeAppend: callback;
     afterAppend: callback;
     beforeShow: callback;
@@ -50,12 +50,12 @@ export interface LayrsCallbacks {
     contentCreated: hook;
     contentLoaded: hook;
 }
-export interface LayrsCreateParam extends LayrsCallbacks {
+export interface MoodalCreateParam extends MoodalCallbacks {
     waitContentLoaded: boolean | null;
     noBackgroundScroll: boolean | null;
     manualShow: boolean;
 }
-export const defCreateParam: LayrsCreateParam = {
+export const defCreateParam: MoodalCreateParam = {
     waitContentLoaded: undefined,
     noBackgroundScroll: undefined,
     manualShow: false,

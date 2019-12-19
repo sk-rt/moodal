@@ -3,23 +3,23 @@ import { contentLoadHandler } from '../utils/contentLoadHandler';
 import { classListAdd, classListRemove } from '../utils/classList';
 
 import {
-    LayrsInitialParam,
+    MoodalInitialParam,
     defInitialParam,
-    LayrsState,
-    LayrsCreateParam,
+    MoodalState,
+    MoodalCreateParam,
     defCreateParam,
     HideQueue
 } from '../constants/';
 /**
- * Layrs Core
+ * Moodal Core
  */
-export default class LayrsCore {
-    param: LayrsInitialParam;
-    state: LayrsState;
+export default class MoodalCore {
+    param: MoodalInitialParam;
+    state: MoodalState;
     container!: HTMLElement;
     contentElement!: HTMLElement;
     hideQueues: HideQueue[] = [];
-    constructor(container: HTMLElement, param?: Partial<LayrsInitialParam>) {
+    constructor(container: HTMLElement, param?: Partial<MoodalInitialParam>) {
         this.param = {
             ...defInitialParam,
             ...param
@@ -59,15 +59,15 @@ export default class LayrsCore {
         }
         [].slice.call(actionElms).forEach((element: HTMLElement) => {
             element.addEventListener('click', () => {
-                if (this.state !== LayrsState.HIDDEN) {
+                if (this.state !== MoodalState.HIDDEN) {
                     this.hide();
                 }
             });
         });
     }
-    setState(action: LayrsState) {
+    setState(action: MoodalState) {
         switch (action) {
-            case LayrsState.HIDDEN: {
+            case MoodalState.HIDDEN: {
                 this.container.setAttribute('aria-hidden', 'true');
                 classListRemove(
                     this.container,
@@ -78,20 +78,20 @@ export default class LayrsCore {
                     this.param.stateClasses.isVissible
                 );
 
-                this.state = LayrsState.HIDDEN;
+                this.state = MoodalState.HIDDEN;
                 break;
             }
-            case LayrsState.LOADING: {
+            case MoodalState.LOADING: {
                 classListRemove(
                     this.container,
                     this.param.stateClasses.isVissible
                 );
                 classListAdd(this.container, this.param.stateClasses.isLoading);
 
-                this.state = LayrsState.LOADING;
+                this.state = MoodalState.LOADING;
                 break;
             }
-            case LayrsState.VISSIBLE: {
+            case MoodalState.VISSIBLE: {
                 this.container.setAttribute('aria-hidden', 'false');
                 classListRemove(
                     this.container,
@@ -102,7 +102,7 @@ export default class LayrsCore {
                     this.param.stateClasses.isVissible
                 );
 
-                this.state = LayrsState.VISSIBLE;
+                this.state = MoodalState.VISSIBLE;
                 break;
             }
 
@@ -114,18 +114,18 @@ export default class LayrsCore {
         this.hideQueues.push(hideQueue);
     }
 
-    create(content: HTMLElement, createParam?: Partial<LayrsCreateParam>) {
+    create(content: HTMLElement, createParam?: Partial<MoodalCreateParam>) {
         if (!content) {
             return;
         }
-        const _createParam: LayrsCreateParam = {
+        const _createParam: MoodalCreateParam = {
             ...defCreateParam,
             waitContentLoaded: this.param.waitContentLoaded,
             noBackgroundScroll: this.param.noBackgroundScroll,
             ...createParam
         };
         this.contentElement.innerHTML = '';
-        this.setState(LayrsState.LOADING);
+        this.setState(MoodalState.LOADING);
         const _content_get =
             _createParam.contentCreated(content, this) || content;
         _createParam.beforeAppend(_content_get, this);
@@ -170,15 +170,15 @@ export default class LayrsCore {
             this.addHideEventListner(_content_ready);
         }
     }
-    show(content: HTMLElement, createParam: LayrsCreateParam) {
+    show(content: HTMLElement, createParam: MoodalCreateParam) {
         createParam.beforeShow(content, this);
-        this.setState(LayrsState.VISSIBLE);
+        this.setState(MoodalState.VISSIBLE);
         createParam.afterShow(content, this);
     }
     hide() {
         this.hideQueues.forEach(func => func.beforeHideQueue());
         this.contentElement.innerHTML = '';
-        this.setState(LayrsState.HIDDEN);
+        this.setState(MoodalState.HIDDEN);
         enableScroll(this.param.backgroundElement);
         this.hideQueues.forEach(func => func.afterHideQueue());
         this.hideQueues = [];

@@ -5,14 +5,16 @@ export default {
     input: './src/ts/index.ts',
     output: [
         {
-            file: './lib/standalone/layrs.js',
+            file: './lib/standalone/moodal.js',
             format: 'iife',
-            name: 'Layrs',
-            compact: true
+            name: 'Moodal',
+            compact: true,
+            exports: 'named'
         },
         {
             file: './lib/cjs/index.js',
-            format: 'cjs'
+            format: 'cjs',
+            exports: 'named'
         },
         {
             file: './lib/esm/index.mjs',

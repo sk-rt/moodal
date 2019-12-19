@@ -1,7 +1,7 @@
 import '../scss/style.scss';
-import '../../../dist/css/layrs-core.css';
+import '../../../dist/css/moodal-core.css';
 
-import Layrs from '../../../dist/esm/index.mjs';
+import Moodal from '../../../dist/esm/index.mjs';
 import * as all from '../../../dist/esm/index.mjs';
 
 document.addEventListener(
@@ -14,7 +14,7 @@ document.addEventListener(
 );
 
 const modalInit = () => {
-    const modal = new Layrs(document.querySelector('.c-layrs'), {
+    const modal = new Moodal(document.querySelector('.c-moodal'), {
         noBackgroundScroll: false,
         backgroundElement: document.querySelector('.l-wrapper')
     });

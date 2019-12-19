@@ -1,9 +1,9 @@
 {
-  "name": "layrs",
+  "name": "moodal",
   "version": "0.0.1",
   "description": "A pure JavaScript library for modal dialog.",
   "main": "lib/cjs/index.js",
-  "module": "lib/esm/layrs.mjs",
+  "module": "lib/esm/moodal.mjs",
   "types": "lib/types/index.d.ts",
   "author": "sk-rt",
   "license": "MIT",
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sk-rt/layrs"
+    "url": "git+https://github.com/sk-rt/moodal"
   },
   "keywords": [
     "modal",
