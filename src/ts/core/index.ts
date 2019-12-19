@@ -122,6 +122,9 @@ export default class MoodalCore {
         trigger: string = ''
     ) {
         // Setup
+        if (!content) {
+            return;
+        }
         const _createParam: MoodalCreateParam = {
             ...defCreateParam,
             waitContentLoaded: this.param.waitContentLoaded,
