@@ -24,7 +24,6 @@ export default class Moodal {
 }
 export { default as MoodalCore } from './core';
 export { default as MoodalController } from './controllers';
-// export { anchorController } from './controllers/anchor';
 export {
     MoodalInitialParam,
     MoodalCreateParam,

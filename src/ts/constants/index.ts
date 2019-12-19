@@ -39,7 +39,10 @@ export const defInitialParam: MoodalInitialParam = {
  * Create Params
  */
 type callback = (content: HTMLElement, modalCore: MoodalCore) => void;
-type hook = (content: HTMLElement, modalCore: MoodalCore) => HTMLElement | void;
+type hook = (
+    content: HTMLElement,
+    modalCore: MoodalCore
+) => HTMLElement | Promise<HTMLElement> | void;
 export interface MoodalCallbacks {
     beforeAppend: callback;
     afterAppend: callback;

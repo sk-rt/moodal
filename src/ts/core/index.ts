@@ -114,10 +114,11 @@ export default class MoodalCore {
         this.hideQueues.push(hideQueue);
     }
 
-    create(content: HTMLElement, createParam?: Partial<MoodalCreateParam>) {
-        if (!content) {
-            return;
-        }
+    async create(
+        content: HTMLElement,
+        createParam?: Partial<MoodalCreateParam>
+    ) {
+        // Setup
         const _createParam: MoodalCreateParam = {
             ...defCreateParam,
             waitContentLoaded: this.param.waitContentLoaded,
@@ -126,48 +127,48 @@ export default class MoodalCore {
         };
         this.contentElement.innerHTML = '';
         this.setState(MoodalState.LOADING);
-        const _content_get =
-            _createParam.contentCreated(content, this) || content;
-        _createParam.beforeAppend(_content_get, this);
+        const _content_created =
+            (await _createParam.contentCreated(content, this)) || content;
+        if (_content_created) _createParam.beforeAppend(_content_created, this);
         // Append
-        this.contentElement.appendChild(_content_get);
+        this.contentElement.appendChild(_content_created);
         if (this.param.noBackgroundScroll) {
             disableScroll(this.param.backgroundElement);
         }
-        _createParam.afterAppend(_content_get, this);
+        _createParam.afterAppend(_content_created, this);
         this.enqueueHideHooks({
             beforeHideQueue: () => {
-                _createParam.beforeHide(_content_get, this);
+                _createParam.beforeHide(_content_created, this);
             },
             afterHideQueue: () => {
-                _createParam.afterHide(_content_get, this);
+                _createParam.afterHide(_content_created, this);
             }
         });
         // Load and Show
-
         if (_createParam.waitContentLoaded) {
-            contentLoadHandler(this.contentElement)
-                .then(() => {
-                    const _content_ready =
-                        _createParam.contentLoaded(_content_get, this) ||
-                        _content_get;
-                    if (!_createParam.manualShow) {
-                        this.show(_content_ready, _createParam);
-                    }
-                    this.addHideEventListner(_content_ready);
-                })
-                .catch(e => {
-                    // eslint-disable-next-line no-console
-                    console.warn(e);
-                    this.hide();
-                });
-        } else {
-            const _content_ready =
-                _createParam.contentLoaded(_content_get, this) || _content_get;
-            if (!_createParam.manualShow) {
-                this.show(_content_ready, _createParam);
+            try {
+                await contentLoadHandler(this.contentElement);
+                const _content_loaded =
+                    (await _createParam.contentLoaded(
+                        _content_created,
+                        this
+                    )) || _content_created;
+                if (!_createParam.manualShow) {
+                    this.show(_content_loaded, _createParam);
+                }
+                this.addHideEventListner(_content_loaded);
+            } catch (error) {
+                console.warn(error);
+                this.hide();
             }
-            this.addHideEventListner(_content_ready);
+        } else {
+            const _content_loaded =
+                (await _createParam.contentLoaded(_content_created, this)) ||
+                _content_created;
+            if (!_createParam.manualShow) {
+                this.show(_content_loaded, _createParam);
+            }
+            this.addHideEventListner(_content_loaded);
         }
     }
     show(content: HTMLElement, createParam: MoodalCreateParam) {
