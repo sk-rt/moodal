@@ -1,30 +1,31 @@
 import MoodalCore from '../core';
 import { MoodalState, MoodalCreateParam } from '../constants';
-import simpleAddListener from '../utils/simpleAddListener';
+import simpleAddListener, { RemoveListener } from '../utils/simpleAddListener';
 /**
  * Controler
  */
 type GetContent = (arg: string) => Promise<HTMLElement> | HTMLElement;
 export interface MoodalControllerParam extends Partial<MoodalCreateParam> {
     controllerAttr?: string;
-    getContent?: GetContent;
+    getContent: GetContent;
 }
 export default class MoodalController {
     param: MoodalControllerParam;
     core: MoodalCore;
-    constructor(
-        coreInstance: MoodalCore,
-        param?: Partial<MoodalControllerParam>
-    ) {
+    removeListners: RemoveListener[];
+    constructor(coreInstance: MoodalCore, param: MoodalControllerParam) {
         this.core = coreInstance;
         this.init(param);
     }
-    init(param?: Partial<MoodalControllerParam>) {
+    init(param?: MoodalControllerParam) {
+        if (!param.getContent || typeof param.getContent !== 'function') {
+            return;
+        }
         this.param = {
             controllerAttr: ``,
             ...param
         };
-        this.addControllListner();
+        this.removeListners = this.addControllListner() || [];
     }
     addControllListner(rootEl: Document | HTMLElement = document) {
         if (!this.param.controllerAttr) {
@@ -52,7 +53,7 @@ export default class MoodalController {
         this.core.setState(MoodalState.LOADING);
         try {
             if (!this.param || !this.param.getContent) {
-                throw new Error('Please run `init()` before `show()`');
+                throw new Error('Please setup param before `show()`');
             }
             if (!target) {
                 return;
@@ -63,6 +64,11 @@ export default class MoodalController {
             // eslint-disable-next-line no-console
             console.error(e);
             this.core.hide();
+        }
+    }
+    destroy() {
+        if (this.removeListners.length !== 0) {
+            this.removeListners.map(remove => remove());
         }
     }
 }
