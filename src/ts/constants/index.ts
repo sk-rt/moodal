@@ -39,18 +39,23 @@ export const defInitialParam: MoodalInitialParam = {
  * Create Params
  */
 // type callback = (content: HTMLElement, modalCore: MoodalCore) => void;
-type fillter = (
+export type CreateContext = {
+    content: HTMLElement;
+    trigger: string;
+};
+type Contentfilter = (
     content: HTMLElement
 ) => HTMLElement | Promise<HTMLElement> | void;
-type callback = (content: HTMLElement) => Promise<void> | void;
+type Hook = (context: CreateContext) => Promise<void> | void;
 
 export interface MoodalCallbacks {
-    beforeAppend: fillter;
-    afterAppend: fillter;
-    beforeShow: callback;
-    afterShow: callback;
-    beforeHide: callback;
-    afterHide: callback;
+    contentCreated: Contentfilter;
+    beforeAppend: Hook;
+    afterAppend: Hook;
+    beforeShow: Hook;
+    afterShow: Hook;
+    beforeHide: Hook;
+    afterHide: Hook;
 }
 export interface MoodalCreateParam extends MoodalCallbacks {
     waitContentLoaded: boolean | null;
@@ -61,6 +66,7 @@ export const defCreateParam: MoodalCreateParam = {
     waitContentLoaded: undefined,
     noBackgroundScroll: undefined,
     manualShow: false,
+    contentCreated: noop,
     beforeAppend: noop,
     afterAppend: noop,
     beforeShow: noop,

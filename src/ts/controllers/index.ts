@@ -4,7 +4,7 @@ import simpleAddListener, { RemoveListener } from '../utils/simpleAddListener';
 /**
  * Controler
  */
-type GetContent = (arg: string) => Promise<HTMLElement> | HTMLElement;
+type GetContent = (trigger: string) => Promise<HTMLElement> | HTMLElement;
 export interface MoodalControllerParam extends Partial<MoodalCreateParam> {
     controllerAttr?: string;
     getContent: GetContent;
@@ -49,17 +49,17 @@ export default class MoodalController {
         this.core.hide();
     }
 
-    async show(target: string) {
+    async show(trigger: string) {
         this.core.setState(MoodalState.LOADING);
         try {
             if (!this.param || !this.param.getContent) {
                 throw new Error('Please setup param before `show()`');
             }
-            if (!target) {
-                return;
+            if (!trigger) {
+                throw new Error('No trigger string');
             }
-            const content = await this.param.getContent(target);
-            this.core.create(content, this.param);
+            const content = await this.param.getContent(trigger);
+            this.core.create(content, this.param, trigger);
         } catch (e) {
             // eslint-disable-next-line no-console
             console.error(e);

@@ -8,8 +8,10 @@ import {
     MoodalState,
     MoodalCreateParam,
     defCreateParam,
-    HideQueue
+    HideQueue,
+    CreateContext
 } from '../constants/';
+import noop from '../utils/noop';
 /**
  * Moodal Core
  */
@@ -116,7 +118,8 @@ export default class MoodalCore {
 
     async create(
         content: HTMLElement,
-        createParam?: Partial<MoodalCreateParam>
+        createParam?: Partial<MoodalCreateParam>,
+        trigger: string = ''
     ) {
         // Setup
         const _createParam: MoodalCreateParam = {
@@ -127,21 +130,24 @@ export default class MoodalCore {
         };
         this.contentElement.innerHTML = '';
         this.setState(MoodalState.LOADING);
-        let _content = content;
 
         // Append
-        _content = (await _createParam.beforeAppend(_content)) || _content;
-        this.contentElement.appendChild(_content);
+
+        const context = {
+            content: (await _createParam.contentCreated(content)) || content,
+            trigger: trigger
+        };
+        this.contentElement.appendChild(content);
         if (this.param.noBackgroundScroll) {
             disableScroll(this.param.backgroundElement);
         }
-        _content = (await _createParam.afterAppend(_content)) || _content;
+        await _createParam.afterAppend(context);
         this.enqueueHideHooks({
             beforeHideQueue: () => {
-                return _createParam.beforeHide(_content);
+                return _createParam.beforeHide(context);
             },
             afterHideQueue: () => {
-                return _createParam.afterHide(_content);
+                return _createParam.afterHide(context);
             }
         });
         // Load and Show
@@ -150,30 +156,35 @@ export default class MoodalCore {
                 await contentLoadHandler(this.contentElement);
 
                 if (!_createParam.manualShow) {
-                    this.show(_content, _createParam);
+                    this.show(context, _createParam);
                 }
-                this.addHideEventListner(_content);
+                this.addHideEventListner(context.content);
             } catch (error) {
                 console.warn(error);
                 this.hide();
             }
         } else {
             if (!_createParam.manualShow) {
-                this.show(_content, _createParam);
+                this.show(context, _createParam);
             }
-            this.addHideEventListner(_content);
+            this.addHideEventListner(context.content);
         }
     }
-    async show(content: HTMLElement, createParam: MoodalCreateParam) {
-        await createParam.beforeShow(content);
+    async show(context: CreateContext, createParam: MoodalCreateParam) {
+        await createParam.beforeShow(context);
         this.setState(MoodalState.VISSIBLE);
-        await createParam.afterShow(content);
+        await createParam.afterShow(context);
     }
     async hide() {
+        if (this.state === MoodalState.HIDDEN) {
+            return;
+        }
         await Promise.all(
             this.hideQueues.map(func => {
                 return new Promise<void>(async resolve => {
-                    await func.beforeHideQueue();
+                    const beforeHideQueue = func.beforeHideQueue;
+                    func.beforeHideQueue = noop;
+                    await beforeHideQueue();
                     resolve();
                 });
             })
@@ -181,14 +192,11 @@ export default class MoodalCore {
         this.contentElement.innerHTML = '';
         this.setState(MoodalState.HIDDEN);
         enableScroll(this.param.backgroundElement);
-        await Promise.all(
-            this.hideQueues.map(func => {
-                return new Promise<void>(async resolve => {
-                    await func.afterHideQueue();
-                    resolve();
-                });
-            })
-        );
+        this.hideQueues.map(func => {
+            const afterHideQueue = func.afterHideQueue;
+            func.afterHideQueue = noop;
+            return afterHideQueue();
+        });
         this.hideQueues = [];
     }
 }
