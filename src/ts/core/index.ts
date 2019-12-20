@@ -33,19 +33,19 @@ export default class MoodalCore {
         }
         this.container = container;
         this.contentElement = this.container.querySelector<HTMLElement>(
-            `[${this.param.contentAttr}]`
+            `${this.param.contentSelector}`
         );
 
         if (!this.contentElement) {
             // eslint-disable-next-line no-console
             console.warn(
-                `No Content Element. Need a element has "${this.param.contentAttr}" attribute in Container Element`
+                `No Content Element. "${this.param.contentSelector}" in Container Element`
             );
             return;
         }
         if (this.param.noBackgroundScroll && !this.param.backgroundElement) {
             console.warn(`No Background Element.
-            if enable "noBackgroundScroll",you need set "backgroundElement" option
+            if enable "noBackgroundScroll",you need set "backgroundElement"
             ex: backgroundElement: document.querySelector(".page-wrapper")`);
             this.param.noBackgroundScroll = false;
         }
@@ -54,7 +54,7 @@ export default class MoodalCore {
 
     addHideEventListner(rootEl: Document | HTMLElement = document) {
         const actionElms = rootEl.querySelectorAll(
-            `[${this.param.modalHideAttr}]`
+            `${this.param.hideOnClickSelector}`
         );
         if (!actionElms) {
             return;

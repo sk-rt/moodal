@@ -9,7 +9,7 @@ A pure JavaScript library for _modal dialog._
 
 ### 1. Install
 
-Using npm, or [download here](https://github.com/sk-rt/moodal/archive/master.zip).
+Using npm
 
 ```bash
 npm install moodal --save
@@ -183,8 +183,8 @@ const modalCtrlAjsx = myModal.addController({
 
 | Param Name              | Type               | Default               | Desc                                                                                                                                 |
 | ----------------------- | ------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| contentAttr             | string             | "data-moodal-content" | Data attribute for the element appended content                                                                                      |
-| modalHideAttr           | string             | "data-moodal-close"   | Data attribute for elements                                                                                                          |
+| contentSelector             | string             | "\[data-moodal-content\]" | Selector for the element appended content                                                                                      |
+| hideOnClickSelector           | string             | "\[data-moodal-close\]"   | Selector for elements that close modal when clicked                                                                                                        |
 | noBackgroundScroll      | boolean            | false                 | if true, fix scrolling element                                                                                                       |
 | backgroundElement       | HTMLElement        | undefined             | The element you want to stop scrolling. ex. `document.querySelector(".page-wrapper")` <br>\* require if `noBackgroundScroll` is true |
 | waitContentLoaded       | boolean            | true                  | if true, the modal is shown after `<img>` or `<iframe>` element is loaded.                                                           |
@@ -247,7 +247,7 @@ myModal.addController({
 | beforeShow   | (context) => Promise\<void\> \| void; | Hook before showing the modal     |
 | afterShow    | (context) => Promise\<void\> \| void; | Hook after showing the modal      |
 | beforeHide   | (context) => Promise\<void\> \| void; | Hook before hiding the modal     |
-| afterHide    | (modal: HTMLElement) => Promise\<void\> \| void;   | Hook after hiding the modal      |
+| afterHide    | (context) => Promise\<void\> \| void;   | Hook after hiding the modal      |
 
 ### Filter
 

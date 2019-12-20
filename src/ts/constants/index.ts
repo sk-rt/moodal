@@ -1,4 +1,3 @@
-import MoodalCore from '../core';
 import noop from '../utils/noop';
 /**
  * State
@@ -12,8 +11,8 @@ export enum MoodalState {
  * Initial Params
  */
 export interface MoodalInitialParam {
-    contentAttr: string;
-    modalHideAttr: string;
+    contentSelector: string;
+    hideOnClickSelector: string;
     noBackgroundScroll: boolean;
     backgroundElement?: HTMLElement;
     waitContentLoaded: boolean;
@@ -24,8 +23,8 @@ export interface MoodalInitialParam {
 }
 export const nameSpace = `moodal`;
 export const defInitialParam: MoodalInitialParam = {
-    contentAttr: `data-${nameSpace}-content`,
-    modalHideAttr: `data-${nameSpace}-close`,
+    contentSelector: `[data-${nameSpace}-content]`,
+    hideOnClickSelector: `[data-${nameSpace}-close]`,
     noBackgroundScroll: false,
     backgroundElement: undefined,
     waitContentLoaded: true,
@@ -38,18 +37,17 @@ export const defInitialParam: MoodalInitialParam = {
 /**
  * Create Params
  */
-// type callback = (content: HTMLElement, modalCore: MoodalCore) => void;
 export type CreateContext = {
     content: HTMLElement;
     trigger: string;
 };
-type Contentfilter = (
+type ContentFilter = (
     content: HTMLElement
 ) => HTMLElement | Promise<HTMLElement> | void;
 type Hook = (context: CreateContext) => Promise<void> | void;
 
 export interface MoodalCallbacks {
-    contentCreated: Contentfilter;
+    contentCreated: ContentFilter;
     beforeAppend: Hook;
     afterAppend: Hook;
     beforeShow: Hook;
