@@ -1,8 +1,8 @@
 import '../scss/style.scss';
-import '../../../lib/css/moodal-core.css';
+import 'moodal/lib/css/moodal-core.css';
 import axios from 'axios';
 
-import Moodal from '../../../';
+import Moodal from 'moodal';
 
 document.addEventListener(
     'DOMContentLoaded',
@@ -65,10 +65,12 @@ const modalInit = () => {
         },
 
         beforeShow: ({ content }) => {
+            // eslint-disable-next-line no-console
             console.log('before:show');
             content.querySelector('img').classList.add('test');
         },
         beforeHide: () => {
+            // eslint-disable-next-line no-console
             console.log('before:Hide');
         }
     });
