@@ -19,7 +19,9 @@
     "uglify:iifa": "uglifyjs lib/standalone/moodal.js --compress --mangle -o lib/standalone/moodal.min.js",
     "uglify:cjs": "uglifyjs lib/cjs/index.js --compress --mangle -o lib/cjs/index.js",
     "clean": "rimraf lib",
-    "prepublish": "npm run build"
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "prepublish": "npm run build",
+    "build:docs":"yarn --cwd ./docs/ dist"
   },
   "repository": {
     "type": "git",
@@ -44,6 +46,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "node-sass": "^4.13.0",
     "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
     "rimraf": "^3.0.0",
     "rollup": "^1.24.0",
     "rollup-plugin-commonjs": "^10.1.0",

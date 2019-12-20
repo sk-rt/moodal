@@ -28,7 +28,7 @@ export default class MoodalCore {
         };
         if (!container) {
             // eslint-disable-next-line no-console
-            console.warn('No Container Element');
+            console.error('No Container Element');
             return;
         }
         this.container = container;
@@ -38,12 +38,13 @@ export default class MoodalCore {
 
         if (!this.contentElement) {
             // eslint-disable-next-line no-console
-            console.warn(
-                `No Content Element. "${this.param.contentSelector}" in Container Element`
+            console.error(
+                `No Content Element. Put "${this.param.contentSelector}" in Container Element`
             );
             return;
         }
         if (this.param.noBackgroundScroll && !this.param.backgroundElement) {
+            // eslint-disable-next-line no-console
             console.warn(`No Background Element.
             if enable "noBackgroundScroll",you need set "backgroundElement"
             ex: backgroundElement: document.querySelector(".page-wrapper")`);
@@ -163,6 +164,7 @@ export default class MoodalCore {
                 }
                 this.addHideEventListner(context.content);
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.warn(error);
                 this.hide();
             }
@@ -184,11 +186,13 @@ export default class MoodalCore {
         }
         await Promise.all(
             this.hideQueues.map(func => {
-                return new Promise<void>(async resolve => {
+                return new Promise<void>(resolve => {
                     const beforeHideQueue = func.beforeHideQueue;
                     func.beforeHideQueue = noop;
-                    await beforeHideQueue();
-                    resolve();
+                    (async () => {
+                        await beforeHideQueue();
+                        resolve();
+                    })();
                 });
             })
         );
