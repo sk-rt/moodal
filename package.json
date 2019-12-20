@@ -20,8 +20,9 @@
     "uglify:cjs": "uglifyjs lib/cjs/index.js --compress --mangle -o lib/cjs/index.js",
     "clean": "rimraf lib",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "prepublish": "npm run build",
-    "build:docs":"yarn --cwd ./docs/ dist"
+    "prepublishOnly": "npm run build",
+    "dist-docs":"yarn --cwd ./docs/ dist",
+    "predist-docs":"yarn --cwd ./docs/ install"
   },
   "repository": {
     "type": "git",

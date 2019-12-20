@@ -13,11 +13,10 @@ document.addEventListener(
 );
 
 const modalInit = () => {
-    const modal = new Moodal(document.querySelector('.c-moodal'), {
+    const modal = new Moodal('.c-moodal', {
         noBackgroundScroll: true,
         backgroundElement: document.querySelector('.l-wrapper')
     });
-    console.log(modal);
 
     const modalCtrl = modal.addController({
         controllerAttr: 'data-modal-target',
@@ -31,32 +30,34 @@ const modalInit = () => {
             return content;
         }
     });
-    // modalCtrl.show('content01');
+    modalCtrl.show('content01');
 
-    const modalAcyncCtrl = modal.addController({
+    modal.addController({
         controllerAttr: 'data-modal-acync',
         waitContentLoaded: true,
         getContent: trigger => {
-            return new Promise(async (resolve, rejects) => {
-                try {
-                    const res = await axios.get(trigger, {
-                        responseType: 'document'
-                    });
-                    const content = res.data.querySelector('#content');
-                    if (content) {
-                        resolve(content);
-                    } else {
-                        rejects(new Error('NO Element'));
+            return new Promise((resolve, rejects) => {
+                (async () => {
+                    try {
+                        const res = await axios.get(trigger + '/@', {
+                            responseType: 'document'
+                        });
+                        const content = res.data.querySelector('#content');
+                        if (content) {
+                            resolve(content);
+                        } else {
+                            throw new Error('No Content!');
+                        }
+                    } catch (error) {
+                        rejects(error);
                     }
-                } catch (error) {
-                    console.log(error);
-                    rejects(error);
-                }
+                })();
             });
         },
         beforeAppend: context => {
-            return new Promise((resolve, rejects) => {
+            return new Promise(resolve => {
                 setTimeout(() => {
+                    // eslint-disable-next-line no-console
                     console.log('before:append', context);
                     resolve(context);
                 }, 100);

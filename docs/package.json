@@ -1,11 +1,11 @@
 {
   "name": "moodal-docs",
   "version": "0.0.1",
-  "description": "document for lars",
+  "description": "document for moodal",
   "main": "index.js",
   "author": "sk-rt",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "scripts": {
     "start": "npm-run-all -p serve watch:*",
     "dist": "npm-run-all clean-dist dist:*",
