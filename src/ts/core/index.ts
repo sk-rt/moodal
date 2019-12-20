@@ -21,36 +21,51 @@ export default class MoodalCore {
     container!: HTMLElement;
     contentElement!: HTMLElement;
     hideQueues: HideQueue[] = [];
-    constructor(container: HTMLElement, param?: Partial<MoodalInitialParam>) {
-        this.param = {
-            ...defInitialParam,
-            ...param
-        };
-        if (!container) {
-            // eslint-disable-next-line no-console
-            console.error('No Container Element');
-            return;
-        }
-        this.container = container;
-        this.contentElement = this.container.querySelector<HTMLElement>(
-            `${this.param.contentSelector}`
-        );
+    constructor(
+        container: HTMLElement | string,
+        param?: Partial<MoodalInitialParam>
+    ) {
+        try {
+            this.param = {
+                ...defInitialParam,
+                ...param
+            };
 
-        if (!this.contentElement) {
-            // eslint-disable-next-line no-console
-            console.error(
-                `No Content Element. Put "${this.param.contentSelector}" in Container Element`
+            if (container && typeof container === 'string') {
+                this.container = document.querySelector<HTMLElement>(container);
+            } else if (container && typeof container === 'object') {
+                this.container = container;
+            } else {
+                throw new Error('No Container Element');
+            }
+            if (!this.container) {
+                throw new Error('No Container Element');
+            }
+
+            this.contentElement = this.container.querySelector<HTMLElement>(
+                `${this.param.contentSelector}`
             );
-            return;
-        }
-        if (this.param.noBackgroundScroll && !this.param.backgroundElement) {
+
+            if (!this.contentElement) {
+                throw new Error(
+                    `No Content Element. Put "${this.param.contentSelector}" in Container Element`
+                );
+            }
+            if (
+                this.param.noBackgroundScroll &&
+                !this.param.backgroundElement
+            ) {
+                // eslint-disable-next-line no-console
+                console.warn(`No Background Element.
+                if enable "noBackgroundScroll",you need set "backgroundElement"
+                ex: backgroundElement: document.querySelector(".page-wrapper")`);
+                this.param.noBackgroundScroll = false;
+            }
+            this.addHideEventListner();
+        } catch (error) {
             // eslint-disable-next-line no-console
-            console.warn(`No Background Element.
-            if enable "noBackgroundScroll",you need set "backgroundElement"
-            ex: backgroundElement: document.querySelector(".page-wrapper")`);
-            this.param.noBackgroundScroll = false;
+            console.error(error);
         }
-        this.addHideEventListner();
     }
 
     addHideEventListner(rootEl: Document | HTMLElement = document) {
