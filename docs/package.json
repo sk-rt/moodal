@@ -12,8 +12,8 @@
     "dist:webpack": "NODE_ENV=production webpack -p",
     "build:webpack": "webpack",
     "serve": "webpack-dev-server",
-    "watch:static": "cpx 'src/static/**/!(__*)' public/index_assets/ --watch --clean",
-    "dist:static": "cpx 'src/static/**/!(__*)' dist/index_assets/ ",
+    "watch:static": "cpx 'src/static/**/!(__*)' public/ --watch --clean",
+    "dist:static": "cpx 'src/static/**/!(__*)' dist/ ",
     "clean-dist": "rimraf dist"
   },
   "devDependencies": {
@@ -39,5 +39,9 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@babel/polyfill": "^7.7.0",
+    "axios": "^0.19.0",
+    "core-js": "3"
+  }
 }

@@ -9,10 +9,10 @@ A pure JavaScript library for _modal dialog._
 
 ### 1. Install
 
-Using npm, install moodal
+Using npm
 
 ```bash
-$ npm install moodal --save
+npm install moodal --save
 # or
 yarn add moodal
 ```
@@ -28,7 +28,7 @@ import Moodal from 'moodal';
 OR write to html
 
 ```html
-<!-- ES modue in browsee -->
+<!-- ES modue in browser -->
 <script type=module src=moodal/lib/esm/moodal.mjs></script>
 ```
 
@@ -39,32 +39,29 @@ OR write to html
 
 ### 3. Load CSS
 
-OR write to html
-
+- scss
+```scss
+@import "moodal/lib/scss/moodal-core.scss"
+```
+- html
 ```html
-<!-- iife(stndalone) -->
 <link rel="stylesheet" href="moodal/lib/css/moodal-core.css" />
 ```
 
 ### 4. Add markup
 
-Add container
 
 ```html
 <div class="c-moodal" tabindex="-1" aria-hidden="true">
     <div class="c-moodal__bg"></div>
     <div class="c-moodal__loader">...Loading</div>
     <div class="c-moodal__container">
+        <!-- close modal on `data-moodal-close` element clicked -->
         <div class="c-moodal__overlay" data-moodal-close></div>
         <div class="c-moodal__inner">
             <div class="c-moodal__body">
-                <button
-                    class="c-moodal__close"
-                    type="button"
-                    aria-label="Close"
-                    data-moodal-close
-                >
-                    ❌
+                <button class="c-moodal__close" type="button" data-moodal-close>
+                    Close
                 </button>
                 <div class="c-moodal__content" data-moodal-content>
                     <!-- Will be appended content here -->
@@ -74,7 +71,18 @@ Add container
     </div>
 </div>
 ```
-
+Minimum
+```html
+<div class="c-moodal" tabindex="-1" aria-hidden="true">
+    <div class="c-moodal__container">
+        <div class="c-moodal__inner">
+            <div class="c-moodal__body">
+                <div class="c-moodal__content" data-moodal-content></div>
+            </div>
+        </div>
+    </div>
+</div>
+```
 ### 5. Initialize Core
 
 ```js
@@ -99,44 +107,75 @@ const myModal = new Moodal(modalContainer, {
 
 ### 6. Add Controller
 
--   Example for getting content from DOM element
+ - __Example 1:__   Get content from DOM element in the page.
 
 ```html
 <!-- controller -->
-<button type="button" data-moodal-target-id="myContent">
-    Show Modal
+<button type="button" data-moodal-anchor="myContent">
+    Show Modal of `myContent`
 </button>
 <!-- template for content -->
-<template id="myContent">
+<template id="myContent" style="display:none;">
     <p>
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-        fugiat nulla pariatur. Excepteur sint occaecat<br />
-        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-        id est laborum.
-    </p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
 </template>
 ```
 
 ```js
 const modalCtrl = myModal.addController({
-    controllerAttr: 'data-moodal-target-id',
+    controllerAttr: 'data-moodal-anchor',
     getContent: trigger => {
-        // `trigger` is value of attribute `data-moodal-target-id`.
+        // `trigger` is value of attribute `data-moodal-anchor`.
         const targetEl = document.getElementById(trigger);
         if (!targetEl) return;
         const content = document.createElement('div');
         content.innerHTML = targetEl.innerHTML;
+        // Must return HTMLElement
         return content;
+    }
+});
+
+// You can show/hide modal by JavaScript
+modalCtrl.show('myContent'); 
+modalCtrl.hide();
+```
+
+-  __Example 2:__  Get content from page by Ajax / axios
+
+```html
+<!-- controller -->
+<button data-moodal-ajax="target.html">
+    Show Modal of `target.html`
+</button>
+```
+
+```js
+
+import axios from 'axios';
+
+const modalCtrlAjsx = myModal.addController({
+    controllerAttr: 'data-moodal-ajax',
+    getContent: async trigger => {
+        // If you want async function, return Promise object
+        return new Promise(async (resolve, rejects) => {
+            try {
+                const res = await axios.get(trigger, {
+                    responseType: 'document'
+                });
+                const content = res.data.querySelector('#content');
+                if (!content) {
+                    throw new Error('No Element');
+                } 
+                resolve(content);
+            } catch (error) {
+                rejects(error);
+            }
+        });
     }
 });
 ```
 
-Show/Hide by JavaScript
 
-```js
-modalCtrl.show('myContent');
-modalCtrl.hide();
-```
 
 ---
 
@@ -144,8 +183,8 @@ modalCtrl.hide();
 
 | Param Name              | Type               | Default               | Desc                                                                                                                                 |
 | ----------------------- | ------------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| contentAttr             | string             | "data-moodal-content" | Data attribute for the element appended content                                                                                      |
-| modalHideAttr           | string             | "data-moodal-close"   | Data attribute for elements                                                                                                          |
+| contentSelector             | string             | "\[data-moodal-content\]" | Selector for the element appended content                                                                                      |
+| hideOnClickSelector           | string             | "\[data-moodal-close\]"   | Selector for elements that close modal when clicked                                                                                                        |
 | noBackgroundScroll      | boolean            | false                 | if true, fix scrolling element                                                                                                       |
 | backgroundElement       | HTMLElement        | undefined             | The element you want to stop scrolling. ex. `document.querySelector(".page-wrapper")` <br>\* require if `noBackgroundScroll` is true |
 | waitContentLoaded       | boolean            | true                  | if true, the modal is shown after `<img>` or `<iframe>` element is loaded.                                                           |
@@ -168,7 +207,7 @@ myModal.addController({
 
 | Param Name        | Type                                                    | Default                        | Desc                                                                                                                     |
 | ----------------- | ------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
-| getContent        | (trigger: string) => Promise<HTMLElement> \| HTMLElement | undefind **\* required**       | Callback on Open/Close Animation Start <br> @param {Boolean} isOpen <br> @param {String} contentID \* Don't ID Attribute |
+| getContent        | (trigger: string) => Promise\<HTMLElement\> \| HTMLElement | undefind **\* required**       | Get the content(HTMLElement) from `trigger` argment |
 | controllerAttr    | string                                                  | ""                             | Data attribute name for button elements.                                                                                 |
 | waitContentLoaded | boolean                                                 | initialParam.waitContentLoaded | Overide the core option                                                                                                  |
 | manualShow        | boolean                                                 | false                          | if true, you need show the modal manualy                                                                                 |
@@ -208,7 +247,7 @@ myModal.addController({
 | beforeShow   | (context) => Promise\<void\> \| void; | Hook before showing the modal     |
 | afterShow    | (context) => Promise\<void\> \| void; | Hook after showing the modal      |
 | beforeHide   | (context) => Promise\<void\> \| void; | Hook before hiding the modal     |
-| afterHide    | (modal: HTMLElement) => Promise\<void\> \| void;   | Hook after hiding the modal      |
+| afterHide    | (context) => Promise\<void\> \| void;   | Hook after hiding the modal      |
 
 ### Filter
 

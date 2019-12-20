@@ -9,13 +9,15 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "npm-run-all clean build:*",
+    "build": "npm-run-all clean build:* uglify:*",
     "dev": "npm-run-all -p watch:*",
     "build:js": "rollup --config --environment BUILD:production",
     "watch:js": "rollup --config --watch",
     "build:scss": "node-sass src/scss/* -o lib/css/",
     "watch:scss": "node-sass src/scss/* -o lib/css/ --watch",
     "build:static": "cpx \"src/scss/**/*\" lib/scss/ ",
+    "uglify:iifa": "uglifyjs lib/standalone/moodal.js --compress --mangle -o lib/standalone/moodal.min.js",
+    "uglify:cjs": "uglifyjs lib/cjs/index.js --compress --mangle -o lib/cjs/index.js",
     "clean": "rimraf lib",
     "prepublish": "npm run build"
   },
@@ -48,6 +50,7 @@
     "rollup-plugin-eslint": "^7.0.0",
     "rollup-plugin-typescript2": "^0.24.3",
     "rollup-plugin-uglify": "^6.0.3",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "uglify-js": "^3.7.2"
   }
 }
