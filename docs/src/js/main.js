@@ -14,8 +14,7 @@ document.addEventListener(
 
 const modalInit = () => {
     const modal = new Moodal('.c-moodal', {
-        noBackgroundScroll: true,
-        backgroundElement: document.querySelector('.l-wrapper')
+        noBackgroundScroll: true
     });
 
     const modalCtrl = modal.addController({

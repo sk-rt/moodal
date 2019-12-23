@@ -1,6 +1,7 @@
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
 import { eslint } from 'rollup-plugin-eslint';
+import json from 'rollup-plugin-json';
 
 export default {
     input: './src/ts/index.ts',
@@ -29,6 +30,7 @@ export default {
         typescript({
             useTsconfigDeclarationDir: true
         }),
-        commonjs()
+        commonjs(),
+        json()
     ]
 };

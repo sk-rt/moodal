@@ -1,4 +1,5 @@
 import noop from '../utils/noop';
+import { LogLevel } from '../modules/Logger';
 /**
  * State
  */
@@ -11,11 +12,12 @@ export enum MoodalState {
  * Initial Params
  */
 export interface MoodalInitialParam {
-    contentSelector: string;
+    containerSelector: string;
     hideOnClickSelector: string;
     noBackgroundScroll: boolean;
     backgroundElement?: HTMLElement;
     waitContentLoaded: boolean;
+    logLevel: LogLevel;
     stateClasses: {
         isVissible: string | string[];
         isLoading: string | string[];
@@ -23,11 +25,12 @@ export interface MoodalInitialParam {
 }
 export const nameSpace = `moodal`;
 export const defInitialParam: MoodalInitialParam = {
-    contentSelector: `[data-${nameSpace}-content]`,
+    containerSelector: `[data-${nameSpace}-container]`,
     hideOnClickSelector: `[data-${nameSpace}-close]`,
     noBackgroundScroll: false,
     backgroundElement: undefined,
     waitContentLoaded: true,
+    logLevel: LogLevel.warning, // 2
     stateClasses: {
         isVissible: 'is-vissible',
         isLoading: 'is-loading'

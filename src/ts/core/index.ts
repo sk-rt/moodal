@@ -42,14 +42,14 @@ export default class MoodalCore {
             this.wrapper = wrapper;
         } else {
             this.logger.log(
-                `${this.logMessagePrefix}No wrapper Element`,
+                `${this.logMessagePrefix}No Wrapper Element`,
                 LogLevel.error
             );
             return;
         }
         if (!this.wrapper) {
             this.logger.log(
-                `${this.logMessagePrefix}No wrapper Element`,
+                `${this.logMessagePrefix}No Wrapper Element`,
                 LogLevel.error
             );
             return;
@@ -61,7 +61,7 @@ export default class MoodalCore {
 
         if (!this.container) {
             this.logger.log(
-                `${this.logMessagePrefix}No Content Element. Put "${this.param.containerSelector}" in wrapper Element`,
+                `${this.logMessagePrefix}No Container Element. Put "${this.param.containerSelector}" in wrapper Element`,
                 LogLevel.error
             );
             return;
@@ -147,6 +147,10 @@ export default class MoodalCore {
     ) {
         // Setup
         if (!content) {
+            this.logger.log(
+                `${this.logMessagePrefix}No content.  "content" param is required in ModalCore.create()`,
+                LogLevel.warning
+            );
             this.hide();
             return;
         }

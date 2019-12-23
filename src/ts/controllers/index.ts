@@ -69,6 +69,7 @@ export default class MoodalController {
             this.core.hide();
         }
     }
+
     destroy() {
         if (this.removeListners.length !== 0) {
             this.removeListners.map(remove => remove());
