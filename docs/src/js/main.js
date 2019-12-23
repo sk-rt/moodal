@@ -14,8 +14,12 @@ document.addEventListener(
 
 const modalInit = () => {
     const modal = new Moodal('.c-moodal', {
-        noBackgroundScroll: true
+        noBackgroundScroll: true,
+        logLevel: 3
     });
+    if (!modal.isValid) {
+        return;
+    }
 
     const modalCtrl = modal.addController({
         controllerAttr: 'data-modal-target',
@@ -29,7 +33,8 @@ const modalInit = () => {
             return content;
         }
     });
-    modalCtrl.show('content01');
+
+    modalCtrl.show('aaa');
 
     modal.addController({
         controllerAttr: 'data-modal-acync',
@@ -38,7 +43,7 @@ const modalInit = () => {
             return new Promise((resolve, rejects) => {
                 (async () => {
                     try {
-                        const res = await axios.get(trigger + '/@', {
+                        const res = await axios.get(trigger, {
                             responseType: 'document'
                         });
                         const content = res.data.querySelector('#content');
