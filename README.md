@@ -66,7 +66,7 @@ Or write in html
 
 ### 4. Add markup
 
--   `[data-moodal-content]` element is requied. And this shoud be left empty. (will be rewrited innerHTML)
+-   `[data-moodal-container]` element is requied. And this shoud be left empty. (will be rewrited innerHTML)
 -   `[data-moodal-close]` elements can be anywhere. The modal is close on it clicked.
 
 ```html
@@ -81,7 +81,7 @@ Or write in html
                 <button class="c-moodal__close" type="button" data-moodal-close>
                     Close
                 </button>
-                <div class="c-moodal__content" data-moodal-content>
+                <div class="c-moodal__content" data-moodal-container>
                     <!-- Will be appended content here -->
                 </div>
             </div>
@@ -97,7 +97,7 @@ Minimum
     <div class="c-moodal__container">
         <div class="c-moodal__inner">
             <div class="c-moodal__body">
-                <div class="c-moodal__content" data-moodal-content></div>
+                <div class="c-moodal__content" data-moodal-container></div>
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@ Minimum
 ```
 
 ### 5. Initialize Core
-`new Moodal( containerElement: string|HTMLElement, <options>)`;
+`new Moodal( wrapperElement: string|HTMLElement, <options>)`;
 
 ```js
 // Init Core
@@ -196,6 +196,10 @@ const modalCtrlAjsx = myModal.addController({
 });
 ```
 
+## Life cycle
+![life cycle diagram](./assets/lifecycle.png)
+
+
 ---
 
 ## Core Params
@@ -203,7 +207,7 @@ const modalCtrlAjsx = myModal.addController({
 
 | Param Name              | Type               | Default                   | Desc                                                                                                                                 |
 | ----------------------- | ------------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| contentSelector         | string             | "\[data-moodal-content\]" | Selector for the element appended content                                                                                            |
+| containerSelector         | string             | "\[data-moodal-container\]" | Selector for the element appended content                                                                                            |
 | hideOnClickSelector     | string             | "\[data-moodal-close\]"   | Selector for elements that close modal when clicked                                                                                  |
 | noBackgroundScroll      | boolean            | false                     | if true, fix scrolling element                                                                                                       |
 | backgroundElement       | HTMLElement        | undefined                 | The element you want to stop scrolling. ex. `document.querySelector(".page-wrapper")` <br>\* require if `noBackgroundScroll` is true |
@@ -211,7 +215,7 @@ const modalCtrlAjsx = myModal.addController({
 | stateClasses            | Object             |                           | Classes for showing / loading state                                                                                                  |
 | stateClasses.isVissible | string \| string[] | is-vissible               | Class on showing modal                                                                                                               |
 | stateClasses.isLoading  | string \| string[] | is-loading                | Class on loading modal                                                                                                               |
-
+| logLevel  | number | 2                  | 0 = off, 1 = error, 2 = warning, 3 = info, 4 = debug                                                                                                           |
 ## Controller Params
 
 ```js

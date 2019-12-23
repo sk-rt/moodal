@@ -1,7 +1,4 @@
-import { disableScroll, enableScroll } from '../utils/disableScroll';
-import { contentLoadHandler } from '../utils/contentLoadHandler';
-import { classListAdd, classListRemove } from '../utils/classList';
-
+import { version } from '../../../package.json';
 import {
     MoodalInitialParam,
     defInitialParam,
@@ -11,61 +8,75 @@ import {
     HideQueue,
     CreateContext
 } from '../constants/';
+import Logger, { LogLevel } from '../modules/Logger';
+import { disableScroll, enableScroll } from '../utils/disableScroll';
+import { contentLoadHandler } from '../utils/contentLoadHandler';
+import { classListAdd, classListRemove } from '../utils/classList';
 import noop from '../utils/noop';
+
 /**
  * Moodal Core
  */
 export default class MoodalCore {
+    logMessagePrefix: string = `[MoodalCore@${version}] `;
     param: MoodalInitialParam;
     state: MoodalState;
+    wrapper!: HTMLElement;
     container!: HTMLElement;
-    contentElement!: HTMLElement;
     hideQueues: HideQueue[] = [];
+    logger: Logger;
+    isValid: boolean = false;
     constructor(
-        container: HTMLElement | string,
+        wrapper: HTMLElement | string,
         param?: Partial<MoodalInitialParam>
     ) {
-        try {
-            this.param = {
-                ...defInitialParam,
-                ...param
-            };
+        this.param = {
+            ...defInitialParam,
+            ...param
+        };
+        this.logger = new Logger(this.param.logLevel);
 
-            if (container && typeof container === 'string') {
-                this.container = document.querySelector<HTMLElement>(container);
-            } else if (container && typeof container === 'object') {
-                this.container = container;
-            } else {
-                throw new Error('No Container Element');
-            }
-            if (!this.container) {
-                throw new Error('No Container Element');
-            }
-
-            this.contentElement = this.container.querySelector<HTMLElement>(
-                `${this.param.contentSelector}`
+        if (wrapper && typeof wrapper === 'string') {
+            this.wrapper = document.querySelector<HTMLElement>(wrapper);
+        } else if (wrapper && typeof wrapper === 'object') {
+            this.wrapper = wrapper;
+        } else {
+            this.logger.log(
+                LogLevel.error,
+                `${this.logMessagePrefix}No Wrapper Element`
             );
-
-            if (!this.contentElement) {
-                throw new Error(
-                    `No Content Element. Put "${this.param.contentSelector}" in Container Element`
-                );
-            }
-            if (
-                this.param.noBackgroundScroll &&
-                !this.param.backgroundElement
-            ) {
-                // eslint-disable-next-line no-console
-                console.warn(`No Background Element.
-                if enable "noBackgroundScroll",you need set "backgroundElement"
-                ex: backgroundElement: document.querySelector(".page-wrapper")`);
-                this.param.noBackgroundScroll = false;
-            }
-            this.addHideEventListner();
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error(error);
+            return;
         }
+        if (!this.wrapper) {
+            this.logger.log(
+                LogLevel.error,
+                `${this.logMessagePrefix}No Wrapper Element`
+            );
+            return;
+        }
+
+        this.container = this.wrapper.querySelector<HTMLElement>(
+            `${this.param.containerSelector}`
+        );
+
+        if (!this.container) {
+            this.logger.log(
+                LogLevel.error,
+                `${this.logMessagePrefix}No Container Element. Put "${this.param.containerSelector}" in Wrapper Element`
+            );
+            return;
+        }
+        if (this.param.noBackgroundScroll && !this.param.backgroundElement) {
+            this.logger.log(
+                LogLevel.warning,
+                `${this.logMessagePrefix}No Background Element.
+                if enable "noBackgroundScroll", you need set "backgroundElement"
+                ex: backgroundElement: document.querySelector(".page-wrapper")`
+            );
+            this.param.noBackgroundScroll = false;
+        }
+        this.isValid = true;
+        this.addHideEventListner();
     }
 
     addHideEventListner(rootEl: Document | HTMLElement = document) {
@@ -86,13 +97,13 @@ export default class MoodalCore {
     setState(action: MoodalState) {
         switch (action) {
             case MoodalState.HIDDEN: {
-                this.container.setAttribute('aria-hidden', 'true');
+                this.wrapper.setAttribute('aria-hidden', 'true');
                 classListRemove(
-                    this.container,
+                    this.wrapper,
                     this.param.stateClasses.isLoading
                 );
                 classListRemove(
-                    this.container,
+                    this.wrapper,
                     this.param.stateClasses.isVissible
                 );
 
@@ -101,24 +112,21 @@ export default class MoodalCore {
             }
             case MoodalState.LOADING: {
                 classListRemove(
-                    this.container,
+                    this.wrapper,
                     this.param.stateClasses.isVissible
                 );
-                classListAdd(this.container, this.param.stateClasses.isLoading);
+                classListAdd(this.wrapper, this.param.stateClasses.isLoading);
 
                 this.state = MoodalState.LOADING;
                 break;
             }
             case MoodalState.VISSIBLE: {
-                this.container.setAttribute('aria-hidden', 'false');
+                this.wrapper.setAttribute('aria-hidden', 'false');
                 classListRemove(
-                    this.container,
+                    this.wrapper,
                     this.param.stateClasses.isLoading
                 );
-                classListAdd(
-                    this.container,
-                    this.param.stateClasses.isVissible
-                );
+                classListAdd(this.wrapper, this.param.stateClasses.isVissible);
 
                 this.state = MoodalState.VISSIBLE;
                 break;
@@ -139,6 +147,11 @@ export default class MoodalCore {
     ) {
         // Setup
         if (!content) {
+            this.logger.log(
+                LogLevel.warning,
+                `${this.logMessagePrefix}No content. "content" param is required`
+            );
+            this.hide();
             return;
         }
         const _createParam: MoodalCreateParam = {
@@ -147,7 +160,7 @@ export default class MoodalCore {
             noBackgroundScroll: this.param.noBackgroundScroll,
             ...createParam
         };
-        this.contentElement.innerHTML = '';
+        this.container.innerHTML = '';
         this.setState(MoodalState.LOADING);
 
         // Append
@@ -156,7 +169,7 @@ export default class MoodalCore {
             content: (await _createParam.contentCreated(content)) || content,
             trigger: trigger
         };
-        this.contentElement.appendChild(content);
+        this.container.appendChild(content);
         if (this.param.noBackgroundScroll) {
             disableScroll(this.param.backgroundElement);
         }
@@ -172,15 +185,14 @@ export default class MoodalCore {
         // Load and Show
         if (_createParam.waitContentLoaded) {
             try {
-                await contentLoadHandler(this.contentElement);
+                await contentLoadHandler(this.container);
 
                 if (!_createParam.manualShow) {
                     this.show(context, _createParam);
                 }
                 this.addHideEventListner(context.content);
             } catch (error) {
-                // eslint-disable-next-line no-console
-                console.warn(error);
+                this.logger.log(LogLevel.warning, error);
                 this.hide();
             }
         } else {
@@ -211,7 +223,7 @@ export default class MoodalCore {
                 });
             })
         );
-        this.contentElement.innerHTML = '';
+        this.container.innerHTML = '';
         this.setState(MoodalState.HIDDEN);
         enableScroll(this.param.backgroundElement);
         this.hideQueues.map(func => {

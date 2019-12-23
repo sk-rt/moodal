@@ -1,6 +1,9 @@
+import { version } from '../../../package.json';
 import MoodalCore from '../core';
 import { MoodalState, MoodalCreateParam } from '../constants';
 import simpleAddListener, { RemoveListener } from '../utils/simpleAddListener';
+import { LogLevel } from '../modules/Logger';
+
 /**
  * Controler
  */
@@ -13,12 +16,20 @@ export default class MoodalController {
     param: MoodalControllerParam;
     core: MoodalCore;
     removeListners: RemoveListener[];
+    logMessagePrefix: string = `[MoodalController@${version}] `;
     constructor(coreInstance: MoodalCore, param: MoodalControllerParam) {
         this.core = coreInstance;
         this.init(param);
     }
     init(param?: MoodalControllerParam) {
+        if (!this.core.isValid) {
+            return;
+        }
         if (!param.getContent || typeof param.getContent !== 'function') {
+            this.core.logger.log(
+                LogLevel.warning,
+                `${this.logMessagePrefix}No "GetContent()" Parameter`
+            );
             return;
         }
         this.param = {
@@ -35,6 +46,10 @@ export default class MoodalController {
             rootEl.querySelectorAll(`[${this.param.controllerAttr}]`)
         );
         if (ctrlElement.length === 0) {
+            this.core.logger.log(
+                LogLevel.warning,
+                `${this.logMessagePrefix}Can't find "this.param.controllerAttr" Element`
+            );
             return;
         }
         return ctrlElement.map((element: HTMLElement) => {
@@ -49,26 +64,35 @@ export default class MoodalController {
         this.core.hide();
     }
 
-    async show(trigger: string) {
-        this.core.setState(MoodalState.LOADING);
+    async show(trigger: string = '') {
         try {
+            this.core.setState(MoodalState.LOADING);
             if (!this.param || !this.param.getContent) {
-                throw new Error('Please setup param before `show()`');
-            }
-            if (!trigger) {
-                throw new Error('No trigger string');
+                throw 'Please initialize before "show()"';
             }
             const content = await this.param.getContent(trigger);
+            if (!content) {
+                throw 'No content. "getContent()" must return DOM Element';
+            }
             this.core.create(content, this.param, trigger);
-        } catch (e) {
-            // eslint-disable-next-line no-console
-            console.error(e);
+        } catch (error) {
+            if (!this.core) {
+                return;
+            }
+            this.core.logger.log(
+                LogLevel.warning,
+                `${this.logMessagePrefix}`,
+                error
+            );
             this.core.hide();
         }
     }
+
     destroy() {
         if (this.removeListners.length !== 0) {
             this.removeListners.map(remove => remove());
+            this.removeListners = null;
         }
+        this.param = null;
     }
 }
