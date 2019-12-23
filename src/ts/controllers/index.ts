@@ -59,6 +59,9 @@ export default class MoodalController {
                 throw new Error('No trigger string');
             }
             const content = await this.param.getContent(trigger);
+            if (!content) {
+                throw new Error('No content DOM');
+            }
             this.core.create(content, this.param, trigger);
         } catch (e) {
             // eslint-disable-next-line no-console
