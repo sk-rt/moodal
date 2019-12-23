@@ -196,6 +196,10 @@ const modalCtrlAjsx = myModal.addController({
 });
 ```
 
+## Life cycle
+![life cycle diagram](./assets/lifecycle.png)
+
+
 ---
 
 ## Core Params
@@ -211,7 +215,7 @@ const modalCtrlAjsx = myModal.addController({
 | stateClasses            | Object             |                           | Classes for showing / loading state                                                                                                  |
 | stateClasses.isVissible | string \| string[] | is-vissible               | Class on showing modal                                                                                                               |
 | stateClasses.isLoading  | string \| string[] | is-loading                | Class on loading modal                                                                                                               |
-
+| logLevel  | number | 2                  | 0 = off, 1 = error, 2 = warning, 3 = info, 4 = debug                                                                                                           |
 ## Controller Params
 
 ```js
