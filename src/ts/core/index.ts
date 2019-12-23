@@ -1,8 +1,4 @@
 import { version } from '../../../package.json';
-import { disableScroll, enableScroll } from '../utils/disableScroll';
-import { contentLoadHandler } from '../utils/contentLoadHandler';
-import { classListAdd, classListRemove } from '../utils/classList';
-import Logger, { LogLevel } from '../modules/Logger';
 import {
     MoodalInitialParam,
     defInitialParam,
@@ -12,13 +8,17 @@ import {
     HideQueue,
     CreateContext
 } from '../constants/';
+import Logger, { LogLevel } from '../modules/Logger';
+import { disableScroll, enableScroll } from '../utils/disableScroll';
+import { contentLoadHandler } from '../utils/contentLoadHandler';
+import { classListAdd, classListRemove } from '../utils/classList';
 import noop from '../utils/noop';
+
 /**
  * Moodal Core
  */
 export default class MoodalCore {
-    nameSpace: string = `MoodalCore@${version}`;
-    logMessagePrefix: string = `${this.nameSpace}: `;
+    logMessagePrefix: string = `[MoodalCore@${version}] `;
     param: MoodalInitialParam;
     state: MoodalState;
     wrapper!: HTMLElement;
@@ -42,15 +42,15 @@ export default class MoodalCore {
             this.wrapper = wrapper;
         } else {
             this.logger.log(
-                `${this.logMessagePrefix}No Wrapper Element`,
-                LogLevel.error
+                LogLevel.error,
+                `${this.logMessagePrefix}No Wrapper Element`
             );
             return;
         }
         if (!this.wrapper) {
             this.logger.log(
-                `${this.logMessagePrefix}No Wrapper Element`,
-                LogLevel.error
+                LogLevel.error,
+                `${this.logMessagePrefix}No Wrapper Element`
             );
             return;
         }
@@ -61,17 +61,17 @@ export default class MoodalCore {
 
         if (!this.container) {
             this.logger.log(
-                `${this.logMessagePrefix}No Container Element. Put "${this.param.containerSelector}" in wrapper Element`,
-                LogLevel.error
+                LogLevel.error,
+                `${this.logMessagePrefix}No Container Element. Put "${this.param.containerSelector}" in Wrapper Element`
             );
             return;
         }
         if (this.param.noBackgroundScroll && !this.param.backgroundElement) {
             this.logger.log(
+                LogLevel.warning,
                 `${this.logMessagePrefix}No Background Element.
-                if enable "noBackgroundScroll",you need set "backgroundElement"
-                ex: backgroundElement: document.querySelector(".page-wrapper`,
-                LogLevel.warning
+                if enable "noBackgroundScroll", you need set "backgroundElement"
+                ex: backgroundElement: document.querySelector(".page-wrapper")`
             );
             this.param.noBackgroundScroll = false;
         }
@@ -148,8 +148,8 @@ export default class MoodalCore {
         // Setup
         if (!content) {
             this.logger.log(
-                `${this.logMessagePrefix}No content.  "content" param is required in ModalCore.create()`,
-                LogLevel.warning
+                LogLevel.warning,
+                `${this.logMessagePrefix}No content. "content" param is required`
             );
             this.hide();
             return;
@@ -192,8 +192,7 @@ export default class MoodalCore {
                 }
                 this.addHideEventListner(context.content);
             } catch (error) {
-                // eslint-disable-next-line no-console
-                console.warn(error);
+                this.logger.log(LogLevel.warning, error);
                 this.hide();
             }
         } else {

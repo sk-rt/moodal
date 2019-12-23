@@ -9,28 +9,28 @@ export enum LogLevel {
     debug = 4
 }
 export default class Logger {
-    showLogLebel: LogLevel;
-    constructor(showLogLebel: LogLevel) {
-        this.showLogLebel = showLogLebel;
+    showLogLevel: LogLevel;
+    constructor(showLogLevel: LogLevel) {
+        this.showLogLevel = showLogLevel;
     }
-    log(message: Error | string, level: LogLevel) {
+    log(level: LogLevel, ...obj: any[]) {
         /* eslint no-console: 0 */
-        if (this.showLogLebel === LogLevel.off) {
+        if (this.showLogLevel === LogLevel.off) {
             return;
         }
-        if (this.showLogLebel >= level) {
+        if (this.showLogLevel >= level) {
             switch (level) {
                 case LogLevel.error:
-                    console.error(message);
+                    console.error(...obj);
                     break;
                 case LogLevel.warning:
-                    console.warn(message);
+                    console.warn(...obj);
                     break;
                 case LogLevel.info:
-                    console.info(message);
+                    console.info(...obj);
                     break;
                 case LogLevel.debug:
-                    console.log(message);
+                    console.log(...obj);
                     break;
                 default:
                     break;
