@@ -1,5 +1,6 @@
 import noop from '../utils/noop';
 import { LogLevel } from '../modules/Logger';
+export const version = '__VERSION__'; // @rollup/plugin-replace
 /**
  * State
  */

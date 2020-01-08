@@ -1,18 +1,16 @@
 {
-    "compilerOptions": {
-        "allowJs": false,
-        "allowSyntheticDefaultImports": true,
-        "sourceMap": true,
-        "target": "es5",
-        "module": "es6",
-        "moduleResolution": "node",
-        "declaration": true,
-        "declarationDir": "lib/types/",
-        "resolveJsonModule": true
-    },
-    "include": ["src/**/*"],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
-    ]
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "target": "es5",
+    "module": "es6",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "lib/types/",
+    "resolveJsonModule": true,
+    "rootDir": "src/ts/"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

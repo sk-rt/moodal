@@ -4,8 +4,7 @@
  * Copyright (c) 2019  Ryuta Sakai
  * Licensed under the MIT license.
  */
-import { version } from '../../package.json';
-import { MoodalInitialParam } from './constants';
+import { version, MoodalInitialParam } from './constants';
 import MoodalCore from './core';
 import MoodalController, { MoodalControllerParam } from './controllers';
 import { LogLevel } from './modules/Logger';
