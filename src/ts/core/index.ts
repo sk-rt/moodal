@@ -1,5 +1,5 @@
-import { version } from '../../../package.json';
 import {
+    version,
     MoodalInitialParam,
     defInitialParam,
     MoodalState,

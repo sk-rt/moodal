@@ -1,6 +1,5 @@
-import { version } from '../../../package.json';
 import MoodalCore from '../core';
-import { MoodalState, MoodalCreateParam } from '../constants';
+import { version, MoodalState, MoodalCreateParam } from '../constants';
 import simpleAddListener, { RemoveListener } from '../utils/simpleAddListener';
 import { LogLevel } from '../modules/Logger';
 
