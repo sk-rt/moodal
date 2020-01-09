@@ -126,7 +126,7 @@ const myModal = new Moodal('.c-moodal', {
 ```
 
 ### 6. Add Controller
-`moodal.addController(<prams>)`
+`moodal.addController(<params>)`
 -   **Example 1:** Get content from DOM element in the page.
 
 ```html
@@ -171,7 +171,7 @@ modalCtrl.hide();
 ```js
 import axios from 'axios';
 
-const modalCtrlAjsx = myModal.addController({
+const modalCtrlAjax = myModal.addController({
     controllerAttr: 'data-moodal-ajax',
     getContent: trigger => {
         // If you want async function, return Promise object
