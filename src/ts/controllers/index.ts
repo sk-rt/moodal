@@ -73,7 +73,10 @@ export default class MoodalController {
             if (!content) {
                 throw 'No content. "getContent()" must return DOM Element';
             }
-            this.core.create(content, this.param, trigger);
+            this.core.create(
+                { content: content, trigger: trigger },
+                this.param
+            );
         } catch (error) {
             if (!this.core) {
                 return;
