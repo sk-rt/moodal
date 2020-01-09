@@ -13,7 +13,7 @@ export default class Logger {
     constructor(showLogLevel: LogLevel) {
         this.showLogLevel = showLogLevel;
     }
-    log(level: LogLevel, ...obj: any[]) {
+    log(level: LogLevel, ...logs: any[]) {
         /* eslint no-console: 0 */
         if (this.showLogLevel === LogLevel.off) {
             return;
@@ -21,16 +21,16 @@ export default class Logger {
         if (this.showLogLevel >= level) {
             switch (level) {
                 case LogLevel.error:
-                    console.error(...obj);
+                    console.error(...logs);
                     break;
                 case LogLevel.warning:
-                    console.warn(...obj);
+                    console.warn(...logs);
                     break;
                 case LogLevel.info:
-                    console.info(...obj);
+                    console.info(...logs);
                     break;
                 case LogLevel.debug:
-                    console.log(...obj);
+                    console.log(...logs);
                     break;
                 default:
                     break;

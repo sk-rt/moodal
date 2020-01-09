@@ -40,12 +40,6 @@ export default class MoodalCore {
             this.wrapper = document.querySelector<HTMLElement>(wrapper);
         } else if (wrapper && typeof wrapper === 'object') {
             this.wrapper = wrapper;
-        } else {
-            this.logger.log(
-                LogLevel.error,
-                `${this.logMessagePrefix}No Wrapper Element`
-            );
-            return;
         }
         if (!this.wrapper) {
             this.logger.log(
@@ -80,13 +74,13 @@ export default class MoodalCore {
     }
 
     addHideEventListner(rootEl: Document | HTMLElement = document) {
-        const actionElms = rootEl.querySelectorAll(
+        const actionEls = rootEl.querySelectorAll(
             `${this.param.hideOnClickSelector}`
         );
-        if (!actionElms) {
+        if (!actionEls) {
             return;
         }
-        [].slice.call(actionElms).forEach((element: HTMLElement) => {
+        [].slice.call(actionEls).forEach((element: HTMLElement) => {
             element.addEventListener('click', () => {
                 if (this.state !== MoodalState.HIDDEN) {
                     this.hide();
@@ -141,12 +135,11 @@ export default class MoodalCore {
     }
 
     async create(
-        content: HTMLElement,
-        createParam?: Partial<MoodalCreateParam>,
-        trigger: string = ''
+        context: CreateContext,
+        createParam?: Partial<MoodalCreateParam>
     ) {
-        // Setup
-        if (!content) {
+        // Validate Param
+        if (!context.content) {
             this.logger.log(
                 LogLevel.warning,
                 `${this.logMessagePrefix}No content. "content" param is required`
@@ -154,32 +147,36 @@ export default class MoodalCore {
             this.hide();
             return;
         }
+        this.setState(MoodalState.LOADING);
+
+        // SetUp Context
         const _createParam: MoodalCreateParam = {
             ...defCreateParam,
             waitContentLoaded: this.param.waitContentLoaded,
             noBackgroundScroll: this.param.noBackgroundScroll,
             ...createParam
         };
-        this.container.innerHTML = '';
-        this.setState(MoodalState.LOADING);
-
-        // Append
-
-        const context = {
-            content: (await _createParam.contentCreated(content)) || content,
-            trigger: trigger
+        const _context: CreateContext = {
+            content:
+                (await _createParam.contentCreated(context.content)) ||
+                context.content,
+            trigger: context.trigger
         };
-        this.container.appendChild(content);
+        this.container.innerHTML = '';
+
+        // Append Content
+        await _createParam.beforeAppend(_context);
+        this.container.appendChild(_context.content);
         if (this.param.noBackgroundScroll) {
             disableScroll(this.param.backgroundElement);
         }
-        await _createParam.afterAppend(context);
+        await _createParam.afterAppend(_context);
         this.enqueueHideHooks({
             beforeHideQueue: () => {
-                return _createParam.beforeHide(context);
+                return _createParam.beforeHide(_context);
             },
             afterHideQueue: () => {
-                return _createParam.afterHide(context);
+                return _createParam.afterHide(_context);
             }
         });
         // Load and Show
@@ -188,16 +185,16 @@ export default class MoodalCore {
                 await contentLoadHandler(this.container);
 
                 if (!_createParam.manualShow) {
-                    this.show(context, _createParam);
+                    this.show(_context, _createParam);
                 }
-                this.addHideEventListner(context.content);
+                this.addHideEventListner(_context.content);
             } catch (error) {
                 this.logger.log(LogLevel.warning, error);
                 this.hide();
             }
         } else {
             if (!_createParam.manualShow) {
-                this.show(context, _createParam);
+                this.show(_context, _createParam);
             }
             this.addHideEventListner(context.content);
         }

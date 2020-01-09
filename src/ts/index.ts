@@ -12,9 +12,11 @@ import { LogLevel } from './modules/Logger';
 export default class Moodal {
     moodalCore: MoodalCore;
     initialParam: MoodalInitialParam;
-    wrapper: HTMLElement;
     isValid: boolean = false;
-    constructor(wrapper: HTMLElement, param?: Partial<MoodalInitialParam>) {
+    constructor(
+        wrapper: string | HTMLElement,
+        param?: Partial<MoodalInitialParam>
+    ) {
         this.moodalCore = new MoodalCore(wrapper, param);
         this.isValid = this.moodalCore.isValid;
         if (!this.isValid) {
@@ -26,7 +28,6 @@ export default class Moodal {
             return;
         }
         this.initialParam = this.moodalCore.param;
-        this.wrapper = wrapper;
     }
     addController(param: MoodalControllerParam) {
         if (!this.isValid) {
