@@ -1,6 +1,6 @@
 {
   "name": "moodal",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A pure JavaScript library for modal dialog.",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/moodal.mjs",
