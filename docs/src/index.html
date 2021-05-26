@@ -1,144 +1,90 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="utf-8" />
-        <title>Moodal.js</title>
+  <head>
+    <meta charset="utf-8" />
+    <title>Moodal.js</title>
 
-        <meta
-            name="description"
-            content="A pure JavaScript library for modal dialog."
-        />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="xx" />
-        <meta property="og:title" content="xxxxx" />
-        <meta property="og:description" content="xxx" />
+    <meta name="description" content="A pure JavaScript library for modal dialog." />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:title" content="Moodal.js" />
+    <meta property="og:description" content="A pure JavaScript library for modal dialog." />
 
-        <meta property="og:site_name" content="xxx" />
-        <meta name="twitter:card" content="summary" />
-        <link rel="shortcut icon" href="favicon.ico" />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"
-        />
-        <link
-            href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
-            rel="stylesheet"
-        />
+    <meta property="og:site_name" content="Moodal.js" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet" />
 
-        <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
-    </head>
-    <body>
-        <div class="l-wrapper">
-            <div class="l-container">
-                <header class="c-header">
-                    <h1 class="title is-1">Moodal</h1>
-                </header>
-                <p>
-                    A pure JavaScript library for <strong>modal dialog.</strong>
-                </p>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+  </head>
+  <body>
+    <div class="l-wrapper">
+      <div class="l-container">
+        <header class="c-header">
+          <h1 class="title is-1">Moodal</h1>
+        </header>
+        <p>A pure JavaScript library for <strong>modal dialog.</strong></p>
 
-                <a href="https://github.com/sk-rt/moodal">
-                    <i class="fab fa-github"></i>
-                    <span>GitHub</span></a
-                >
-            </div>
+        <a href="https://github.com/sk-rt/moodal">
+          <i class="fab fa-github"></i>
+          <span>GitHub</span></a
+        >
+      </div>
 
-            <section class="c-section">
-                <div class="l-container">
-                    <h2 class="title is-2">Get Started</h2>
-                    <h2 class="title is-3">npm</h2>
-                </div>
-                <pre
-                    class="code-sample"
-                ><code class="prettyprint">npm install moodal 
+      <section class="c-section">
+        <div class="l-container">
+          <h2 class="title is-2">Get Started</h2>
+          <h2 class="title is-3">npm</h2>
+        </div>
+        <pre class="code-sample"><code class="prettyprint">npm install moodal 
                   #or yarn add moodal </code></pre>
 
-                <div class="navs">
-                    <button
-                        type="button"
-                        class="button is-primary is-fullwidth is-medium"
-                        data-modal-target="content01"
-                    >
-                        Open
-                    </button>
-                    <button
-                        type="button"
-                        class="button is-primary is-fullwidth is-medium"
-                        data-modal-acync="./target.html"
-                    >
-                        Open
-                    </button>
-                </div>
-            </section>
+        <div class="navs">
+          <button type="button" class="button is-primary is-fullwidth is-medium" data-modal-target="content01">Open</button>
+          <button type="button" class="button is-primary is-fullwidth is-medium" data-modal-acync="./target.html">Open</button>
         </div>
-        <template id="content01">
-            <div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.<br />
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis
-                    aute<br />
-                    irure dolor in reprehenderit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
-                    cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum.Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua.<br />
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis
-                    aute<br />
-                    irure dolor in reprehenderit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
-                    cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum.Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit, sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua.<br />
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis
-                    aute<br />
-                    irure dolor in reprehenderit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
-                    cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum.
-                </p>
-            </div>
-        </template>
-        <template id="content02">
-            <div>
-                <p>
-                    <img src="http://lorempixel.com/400/200/sports/" alt="" />
-                    irure dolor in reprehenderit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
-                    cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum.
-                </p>
-            </div>
-        </template>
-        <div class="c-moodal" tabindex="-1" aria-hidden="true">
-            <div class="c-moodal__bg"></div>
-            <div class="c-moodal__loader">...Loading</div>
-            <div class="c-moodal__container">
-                <div class="c-moodal__overlay" data-moodal-close></div>
-                <div class="c-moodal__inner">
-                    <div class="c-moodal__body">
-                        <button
-                            class="c-moodal__close"
-                            type="button"
-                            aria-label="Close"
-                            data-moodal-close
-                        >
-                            ❌
-                        </button>
-                        <div
-                            class="c-moodal__content"
-                            data-moodal-container
-                        ></div>
-                    </div>
-                </div>
-            </div>
+      </section>
+    </div>
+    <template id="content01">
+      <div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute<br />
+          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
+          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute<br />
+          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
+          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute<br />
+          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
+          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+    </template>
+    <template id="content02">
+      <div>
+        <p>
+          <img src="https://placeimg.com/640/480/any" alt="" width="640" height="480" loading="lazy" />
+          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
+          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+    </template>
+    <div class="c-moodal" tabindex="-1" aria-hidden="true">
+      <div class="c-moodal__bg"></div>
+      <div class="c-moodal__loader">...Loading</div>
+      <div class="c-moodal__container">
+        <div class="c-moodal__overlay" data-moodal-close></div>
+        <div class="c-moodal__inner">
+          <div class="c-moodal__body">
+            <button class="c-moodal__close" type="button" aria-label="Close" data-moodal-close>❌</button>
+            <div class="c-moodal__content" data-moodal-container></div>
+          </div>
         </div>
-    </body>
+      </div>
+    </div>
+  </body>
 </html>
