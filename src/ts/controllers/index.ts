@@ -46,7 +46,7 @@ export default class MoodalController {
     );
     if (ctrlElement.length === 0) {
       this.core.logger.log(
-        LogLevel.warning,
+        LogLevel.debug,
         `${this.logMessagePrefix}Can't find "this.param.controllerAttr" Element`
       );
       return;
