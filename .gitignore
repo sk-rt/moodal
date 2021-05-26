@@ -8,6 +8,8 @@ node_modules
 
 lib
 dist
+public/*
+!.gitkeep
 
 # Logs
 logs
