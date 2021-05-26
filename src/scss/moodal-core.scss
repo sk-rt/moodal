@@ -6,98 +6,96 @@
 
 $namespace: moodal;
 .c-#{$namespace} {
-    visibility: hidden;
-    opacity: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 200;
-    transition: 0.4s;
-    overflow: hidden;
-    pointer-events: none;
-    &.is-vissible {
-        visibility: visible;
-        opacity: 1;
-    }
-    &.is-loading {
-        visibility: visible;
-        opacity: 1;
-    }
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  transition: 0.4s;
+  overflow: hidden;
+  pointer-events: none;
+  &.is-vissible {
+    visibility: visible;
+    opacity: 1;
+  }
+  &.is-loading {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 .c-#{$namespace}__bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-    background-color: rgba(#000, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
 }
 .c-#{$namespace}__loader {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-    color: #fff;
-    @at-root .is-loading & {
-        opacity: 1;
-        visibility: visible;
-    }
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  color: #fff;
+  @at-root .c-#{$namespace}.is-loading & {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 .c-#{$namespace}__container {
-    position: relative;
-    z-index: 5;
-    height: 100%;
-    width: 100%;
-    pointer-events: auto;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  width: 100%;
+  pointer-events: auto;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .c-#{$namespace}__inner {
-    padding: 40px 5%;
-    max-width: 100%;
-    min-height: 100%;
-    box-sizing: border-box;
-    position: relative;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
+  padding: 40px 5%;
+  max-width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
 }
 .c-#{$namespace}__overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-    pointer-events: auto;
-    cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: auto;
+  cursor: pointer;
 }
 .c-#{$namespace}__body {
-    flex: 0 0 auto;
-    max-width: 100%;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 3;
-    opacity: 0;
-    background-color: #fff;
-    @at-root .is-vissible & {
-        opacity: 1;
-    }
+  flex: 0 0 auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 3;
+  opacity: 0;
+  @at-root .c-#{$namespace}.is-vissible & {
+    opacity: 1;
+  }
 }
 .c-#{$namespace}__content {
-    padding: 10px;
+  padding: 10px;
 }
