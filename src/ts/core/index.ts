@@ -12,6 +12,9 @@ import Logger, { LogLevel } from '../modules/Logger';
 import { disableScroll, enableScroll } from '../utils/disableScroll';
 import { contentLoadHandler } from '../utils/contentLoadHandler';
 import { classListAdd, classListRemove } from '../utils/classList';
+import { addFocusTrap } from '../utils/focusTrap';
+import { keydownHandler } from '../utils/keydownHandler';
+
 import noop from '../utils/noop';
 
 /**
@@ -26,6 +29,7 @@ export default class MoodalCore {
   hideQueues: HideQueue[] = [];
   logger: Logger;
   isValid: boolean = false;
+
   constructor(
     wrapper: HTMLElement | string,
     param?: Partial<MoodalInitialParam>
@@ -73,7 +77,7 @@ export default class MoodalCore {
     this.addHideEventListner();
   }
 
-  addHideEventListner(rootEl: Document | HTMLElement = document) {
+  private addHideEventListner(rootEl: Document | HTMLElement = document) {
     const actionEls = rootEl.querySelectorAll(
       `${this.param.hideOnClickSelector}`
     );
@@ -92,13 +96,45 @@ export default class MoodalCore {
     switch (action) {
       case MoodalState.HIDDEN: {
         this.wrapper.setAttribute('aria-hidden', 'true');
+        this.wrapper.tabIndex = -1;
+
         classListRemove(this.wrapper, this.param.stateClasses.isLoading);
         classListRemove(this.wrapper, this.param.stateClasses.isVissible);
+        // this.removeFocusTrapListner();
+        // this.removeFocusTrapListner = noop;
+        // this.removeHideByEscListner();
+        // this.removeHideByEscListner = noop;
 
         this.state = MoodalState.HIDDEN;
         break;
       }
       case MoodalState.LOADING: {
+        if (this.param.enableFucusTrap) {
+          const hasTrantion = ((transitionDuration) => {
+            return !(transitionDuration === '0s' || transitionDuration === '');
+          })(window.getComputedStyle(this.wrapper).transitionDuration);
+
+          if (hasTrantion) {
+            this.wrapper.addEventListener(
+              'transitionend',
+              () => {
+                if (this.state === MoodalState.HIDDEN) {
+                  return;
+                }
+                this.enqueueHideHooks({
+                  beforeHideQueue: noop,
+                  afterHideQueue: addFocusTrap(this.wrapper),
+                });
+              },
+              { once: true }
+            );
+          } else {
+            this.enqueueHideHooks({
+              beforeHideQueue: noop,
+              afterHideQueue: addFocusTrap(this.wrapper),
+            });
+          }
+        }
         classListRemove(this.wrapper, this.param.stateClasses.isVissible);
         classListAdd(this.wrapper, this.param.stateClasses.isLoading);
 
@@ -107,9 +143,19 @@ export default class MoodalCore {
       }
       case MoodalState.VISSIBLE: {
         this.wrapper.setAttribute('aria-hidden', 'false');
+        this.wrapper.tabIndex = 0;
+
         classListRemove(this.wrapper, this.param.stateClasses.isLoading);
         classListAdd(this.wrapper, this.param.stateClasses.isVissible);
 
+        if (this.param.hideByEscKey) {
+          this.enqueueHideHooks({
+            beforeHideQueue: noop,
+            afterHideQueue: keydownHandler(document.body, ['Escape'], () =>
+              this.hide()
+            ),
+          });
+        }
         this.state = MoodalState.VISSIBLE;
         break;
       }
@@ -118,7 +164,8 @@ export default class MoodalCore {
         break;
     }
   }
-  enqueueHideHooks(hideQueue: HideQueue) {
+
+  private enqueueHideHooks(hideQueue: HideQueue) {
     this.hideQueues.push(hideQueue);
   }
 
@@ -135,7 +182,6 @@ export default class MoodalCore {
       this.hide();
       return;
     }
-    this.setState(MoodalState.LOADING);
 
     // SetUp Context
     const _createParam: MoodalCreateParam = {
