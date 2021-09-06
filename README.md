@@ -81,7 +81,7 @@ Or write in html
                 <button class="c-moodal__close" type="button" data-moodal-close>
                     Close
                 </button>
-                <div class="c-moodal__content" data-moodal-container>
+                <div class="c-moodal__content" role="dialog" aria-modal="true" data-moodal-container>
                     <!-- Will be appended content here -->
                 </div>
             </div>
@@ -97,7 +97,7 @@ Minimum
     <div class="c-moodal__container">
         <div class="c-moodal__inner">
             <div class="c-moodal__body">
-                <div class="c-moodal__content" data-moodal-container></div>
+                <div class="c-moodal__content" role="dialog" aria-modal="true" data-moodal-container></div>
             </div>
         </div>
     </div>
