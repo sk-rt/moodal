@@ -109,7 +109,7 @@ export default class MoodalCore {
         break;
       }
       case MoodalState.LOADING: {
-        if (this.param.enableFucusTrap) {
+        if (this.param.enableFocusTrap) {
           const hasTrantion = ((transitionDuration) => {
             return !(transitionDuration === '0s' || transitionDuration === '');
           })(window.getComputedStyle(this.wrapper).transitionDuration);

@@ -216,7 +216,7 @@ const modalCtrlAjax = myModal.addController({
 | stateClasses.isVissible | string \| string[] | is-vissible               | Class on showing modal                                                                                                               |
 | stateClasses.isLoading  | string \| string[] | is-loading                | Class on loading modal                                                                                                               |
 | logLevel  | number | 2                  | 0 = off, 1 = error, 2 = warning, 3 = info, 4 = debug                                                                                                           |
-| enableFucusTrap  | boolean | true                 | Trap focus within a modal container on showing |
+| enableFocusTrap  | boolean | true                 | Trap focus within a modal container on showing |
 | hideByEscKey  | boolean | true                 | Hide modadal using the ESC Key |
 
 ## Controller Params

@@ -19,7 +19,7 @@ export interface MoodalInitialParam {
   backgroundElement?: HTMLElement;
   waitContentLoaded: boolean;
   logLevel: LogLevel;
-  enableFucusTrap: boolean;
+  enableFocusTrap: boolean;
   hideByEscKey: boolean;
 
   stateClasses: {
@@ -35,7 +35,7 @@ export const defInitialParam: MoodalInitialParam = {
   backgroundElement: undefined,
   waitContentLoaded: true,
   logLevel: LogLevel.warning, // 2
-  enableFucusTrap: true,
+  enableFocusTrap: true,
   hideByEscKey: true,
   stateClasses: {
     isVissible: 'is-vissible',
