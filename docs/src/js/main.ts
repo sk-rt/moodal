@@ -15,6 +15,7 @@ document.addEventListener(
 const modalInit = () => {
   const modal = new Moodal('.c-moodal', {
     noBackgroundScroll: true,
+    backgroundElement: document.querySelector('.l-wrapper'),
     logLevel: 3,
   });
   if (!modal.isValid) {
@@ -59,11 +60,11 @@ const modalInit = () => {
       });
     },
     beforeAppend: (context) => {
-      return new Promise((resolve) => {
+      return new Promise<void>((resolve) => {
         setTimeout(() => {
           // eslint-disable-next-line no-console
           console.log('before:append', context);
-          resolve(context);
+          resolve();
         }, 100);
       });
     },
@@ -73,6 +74,7 @@ const modalInit = () => {
       console.log('before:show');
       content.querySelector('img').classList.add('test');
     },
+
     beforeHide: () => {
       // eslint-disable-next-line no-console
       console.log('before:Hide');
