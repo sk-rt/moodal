@@ -22,7 +22,7 @@ const modalInit = () => {
     return;
   }
 
-  const modalCtrl = modal.addController({
+  modal.addController({
     controllerAttr: 'data-modal-target',
     getContent: (arg) => {
       const wrapper = document.getElementById(arg);
@@ -34,8 +34,6 @@ const modalInit = () => {
       return content;
     },
   });
-
-  modalCtrl.show('aaa');
 
   modal.addController({
     controllerAttr: 'data-modal-acync',
