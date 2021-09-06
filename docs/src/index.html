@@ -54,6 +54,7 @@
           irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
           cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
           adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br />
+
           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute<br />
           irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
           cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur
@@ -62,6 +63,7 @@
           irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat<br />
           cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </p>
+        <button class="button is-primary" data-moodal-close>Close</button>
       </div>
     </template>
     <template id="content02">
@@ -73,13 +75,13 @@
         </p>
       </div>
     </template>
-    <div class="c-moodal" tabindex="-1" aria-hidden="true">
+    <div class="c-moodal" tabindex="-1" aria-hidden="true" aria-live="polite">
       <div class="c-moodal__bg"></div>
       <div class="c-moodal__loader">...Loading</div>
       <div class="c-moodal__container">
         <div class="c-moodal__overlay" data-moodal-close></div>
         <div class="c-moodal__inner">
-          <div class="c-moodal__body">
+          <div class="c-moodal__body" role="dialog" aria-modal="true">
             <button class="c-moodal__close" type="button" aria-label="Close" data-moodal-close>❌</button>
             <div class="c-moodal__content" data-moodal-container></div>
           </div>

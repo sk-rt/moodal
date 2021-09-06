@@ -30,7 +30,7 @@ Or write in html
 
 ```html
 <!-- ES modue in browser -->
-<script type=module src=node_modules/moodal/lib/esm/moodal.mjs></script>
+<script type=module src=https://unpkg.com/moodal/lib/esm/index.mjs></script>
 ```
 
 ```html
@@ -81,7 +81,7 @@ Or write in html
                 <button class="c-moodal__close" type="button" data-moodal-close>
                     Close
                 </button>
-                <div class="c-moodal__content" data-moodal-container>
+                <div class="c-moodal__content" role="dialog" aria-modal="true" data-moodal-container>
                     <!-- Will be appended content here -->
                 </div>
             </div>
@@ -97,7 +97,7 @@ Minimum
     <div class="c-moodal__container">
         <div class="c-moodal__inner">
             <div class="c-moodal__body">
-                <div class="c-moodal__content" data-moodal-container></div>
+                <div class="c-moodal__content" role="dialog" aria-modal="true" data-moodal-container></div>
             </div>
         </div>
     </div>
@@ -216,6 +216,9 @@ const modalCtrlAjax = myModal.addController({
 | stateClasses.isVissible | string \| string[] | is-vissible               | Class on showing modal                                                                                                               |
 | stateClasses.isLoading  | string \| string[] | is-loading                | Class on loading modal                                                                                                               |
 | logLevel  | number | 2                  | 0 = off, 1 = error, 2 = warning, 3 = info, 4 = debug                                                                                                           |
+| enableFucusTrap  | boolean | true                 | Trap focus within a modal container on showing |
+| hideByEscKey  | boolean | true                 | Hide modadal using the ESC Key |
+
 ## Controller Params
 
 ```js
