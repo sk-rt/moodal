@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "extends": ["eslint:recommended", "prettier"],
   "plugins": ["@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "env": {
