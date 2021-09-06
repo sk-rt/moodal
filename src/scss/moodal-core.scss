@@ -15,6 +15,7 @@ $namespace: moodal;
   bottom: 0;
   z-index: 200;
   transition: 0.4s;
+  transition-property: visibility, opacity;
   overflow: hidden;
   pointer-events: none;
   &.is-vissible {
