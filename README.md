@@ -10,83 +10,73 @@ A pure JavaScript library for _modal dialog._
 
 ### 1. Install
 
-Using npm
+#### Install from NPM
 
-```bash
+```sh
 npm install moodal --save
-# or
+# or using yarn
 yarn add moodal
 ```
 
-### 2. Load JavaScript
-
-#### ES modules
-
 ```js
+// import Moodal js
 import Moodal from 'moodal';
+
+// import required style
+import 'moodal/lib/css/moodal-core.css';
 ```
 
-Or write in html
+#### Use CDN
 
 ```html
-<!-- ES modue in browser -->
-<script type=module src=https://unpkg.com/moodal/lib/esm/index.mjs></script>
-```
-
-```html
-<!-- CDN -->
 <script
-    src="https://unpkg.com/moodal/lib/standalone/moodal.min.js"
-    defer
+  src="https://unpkg.com/moodal/lib/standalone/moodal.min.js"
+  defer
 ></script>
-```
-
-### 3. Load CSS
-
-Load into your scss
-
-```scss
-@import 'node_modules/moodal/lib/scss/moodal-core.scss';
-```
-
-Or write in html
-
-```html
-<!-- Node modules -->
-<link rel="stylesheet" href="node_modules/moodal/lib/css/moodal-core.css" />
-```
-
-```html
-<!-- CDN -->
 <link
-    rel="stylesheet"
-    href="https://unpkg.com/moodal/lib/css/moodal-core.css"
+  rel="stylesheet"
+  href="https://unpkg.com/moodal/lib/css/moodal-core.css"
 />
 ```
 
-### 4. Add markup
+#### Use ES modules in browser.
 
--   `[data-moodal-container]` element is requied. And this shoud be left empty. (will be rewrited innerHTML)
--   `[data-moodal-close]` elements can be anywhere. The modal is close on it clicked.
+```html
+<script type="module" src="https://unpkg.com/moodal/lib/esm/index.mjs"></script>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/moodal/lib/css/moodal-core.css"
+/>
+```
+
+### 2. Add markup
+
+- `[data-moodal-container]` element is requied. And this shoud be left empty. (will be rewrited innerHTML)
+- `[data-moodal-close]` elements can be anywhere. The modal is close on it clicked.
 
 ```html
 <div class="c-moodal" tabindex="-1" aria-hidden="true">
-    <div class="c-moodal__bg"></div>
-    <div class="c-moodal__loader">...Loading</div>
-    <div class="c-moodal__container">
-        <!-- close modal on `data-moodal-close` element clicked -->
-        <div class="c-moodal__overlay" data-moodal-close></div>
-        <div class="c-moodal__inner">
-            <div class="c-moodal__body">
-                <button class="c-moodal__close" type="button" data-moodal-close>
-                    Close
-                </button>
-                <div class="c-moodal__content" role="dialog" aria-modal="true" data-moodal-container>
-                    <!-- Will be appended content here -->
-                </div>
-            </div>
+  <div class="c-moodal__bg"></div>
+  <div class="c-moodal__loader">...Loading</div>
+  <div class="c-moodal__container">
+    <!-- close modal on `data-moodal-close` element clicked -->
+    <div class="c-moodal__overlay" data-moodal-close></div>
+    <div class="c-moodal__inner">
+      <div class="c-moodal__body">
+        <button class="c-moodal__close" type="button" data-moodal-close>
+          Close
+        </button>
+        <div
+          class="c-moodal__content"
+          role="dialog"
+          aria-modal="true"
+          data-moodal-container
+        >
+          <!-- Will be appended content here -->
         </div>
+      </div>
     </div>
+  </div>
 </div>
 ```
 
@@ -94,64 +84,72 @@ Minimum
 
 ```html
 <div class="c-moodal" tabindex="-1" aria-hidden="true">
-    <div class="c-moodal__container">
-        <div class="c-moodal__inner">
-            <div class="c-moodal__body">
-                <div class="c-moodal__content" role="dialog" aria-modal="true" data-moodal-container></div>
-            </div>
-        </div>
+  <div class="c-moodal__container">
+    <div class="c-moodal__inner">
+      <div class="c-moodal__body">
+        <div
+          class="c-moodal__content"
+          role="dialog"
+          aria-modal="true"
+          data-moodal-container
+        ></div>
+      </div>
     </div>
+  </div>
 </div>
 ```
 
-### 5. Initialize Core
+### 3. Initialize Core
+
 `new Moodal( wrapperElement: string|HTMLElement, <options>)`;
 
 ```js
 // Init Core
-const myModal = new Moodal('.c-modal'); // selector or HTMLElement
+const myModal = new Moodal('.c-moodal'); // selector or HTMLElement
 ```
 
 ```js
 // Init Core with options
 const myModal = new Moodal('.c-moodal', {
-    noBackgroundScroll: true,
-    backgroundElement: document.querySelector('.page-wrapper'),
-    waitContentLoaded: true,
-    stateClasses: {
-        isVissible: 'is-vissible',
-        isLoading: 'is-loading'
-    }
+  noBackgroundScroll: true,
+  backgroundElement: document.querySelector('.page-wrapper'),
+  waitContentLoaded: true,
+  stateClasses: {
+    isVissible: 'is-vissible',
+    isLoading: 'is-loading',
+  },
 });
 ```
 
-### 6. Add Controller
+### 4. Add Controller
+
 `moodal.addController(<params>)`
--   **Example 1:** Get content from DOM element in the page.
+
+- **Example 1:** Get content from DOM element in the page.
 
 ```html
 <!-- controller -->
 <button type="button" data-moodal-anchor="myContent">
-    Show Modal of `myContent`
+  Show Modal of `myContent`
 </button>
 <!-- template for content -->
 <template id="myContent" style="display:none;">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,...</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,...</p>
 </template>
 ```
 
 ```js
 const modalCtrl = myModal.addController({
-    controllerAttr: 'data-moodal-anchor',
-    getContent: trigger => {
-        // `trigger` is value of attribute `data-moodal-anchor`.
-        const targetEl = document.getElementById(trigger);
-        if (!targetEl) return;
-        const content = document.createElement('div');
-        content.innerHTML = targetEl.innerHTML;
-        // Must return a HTMLElement
-        return content;
-    }
+  controllerAttr: 'data-moodal-anchor',
+  getContent: (trigger) => {
+    // `trigger` is value of attribute `data-moodal-anchor`.
+    const targetEl = document.getElementById(trigger);
+    if (!targetEl) return;
+    const content = document.createElement('div');
+    content.innerHTML = targetEl.innerHTML;
+    // Must return a HTMLElement
+    return content;
+  },
 });
 
 // You can show/hide modal by JavaScript
@@ -159,76 +157,85 @@ modalCtrl.show('myContent');
 modalCtrl.hide();
 ```
 
--   **Example 2:** Get content from page by Ajax / axios
+- **Example 2:** Get content from page by fetch
 
 ```html
 <!-- controller -->
-<button data-moodal-ajax="target.html">
-    Show Modal of `target.html`
-</button>
+<button data-moodal-ajax="target.html">Show Modal of `target.html`</button>
 ```
 
 ```js
-import axios from 'axios';
-
 const modalCtrlAjax = myModal.addController({
-    controllerAttr: 'data-moodal-ajax',
-    getContent: trigger => {
-        // If you want async function, return Promise object
-        return new Promise( (resolve, rejects) => {
-           (async () => {
-                try {
-                    const res = await axios.get(trigger, {
-                        responseType: 'document'
-                    });
-                    const content = res.data.querySelector('main');
-                    if (content) {
-                        resolve(content);
-                    } else {
-                        throw new Error('No Content!');
-                    }
-                } catch (error) {
-                    rejects(error);
-                }
-            })();
-        });
+  controllerAttr: 'data-moodal-ajax',
+  getContent: async (trigger) => {
+    const response = await fetch(trigger, {
+      method: 'GET',
+    });
+    const data = await response.text();
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = data;
+    const content = wrapper.querySelector('article');
+    if (!content) {
+      throw new Error('No Content!');
     }
+    return content;
+  },
 });
 ```
 
-## Life cycle
-![life cycle diagram](./assets/lifecycle.png)
+### 5. Styling
 
+No theme styles is included in this library.  
+You need to add the theme css yourself.
+
+
+```css
+.c-moodal__bg {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.c-moodal__inner {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+.c-moodal__body {
+  border-radius: 6px;
+  padding: 40px;
+  background-color: #fff;
+}
+```
+
+## Life cycle
+
+![life cycle diagram](./assets/lifecycle.png)
 
 ---
 
 ## Core Params
 
-
-| Param Name              | Type               | Default                   | Desc                                                                                                                                 |
-| ----------------------- | ------------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| containerSelector         | string             | "\[data-moodal-container\]" | Selector for the element appended content                                                                                            |
-| hideOnClickSelector     | string             | "\[data-moodal-close\]"   | Selector for elements that close modal when clicked                                                                                  |
-| noBackgroundScroll      | boolean            | false                     | if true, fix scrolling element                                                                                                       |
-| backgroundElement       | HTMLElement        | undefined                 | The element you want to stop scrolling. ex. `document.querySelector(".page-wrapper")` <br>\* require if `noBackgroundScroll` is true |
-| waitContentLoaded       | boolean            | true                      | if true, the modal is shown after `<img>` or `<iframe>` element is loaded.                                                           |
-| stateClasses            | Object             |                           | Classes for showing / loading state                                                                                                  |
-| stateClasses.isVissible | string \| string[] | is-vissible               | Class on showing modal                                                                                                               |
-| stateClasses.isLoading  | string \| string[] | is-loading                | Class on loading modal                                                                                                               |
-| logLevel  | number | 2                  | 0 = off, 1 = error, 2 = warning, 3 = info, 4 = debug                                                                                                           |
-| enableFocusTrap  | boolean | true                 | Trap focus within a modal container on showing |
-| hideByEscKey  | boolean | true                 | Hide modadal using the ESC Key |
+| Param Name              | Type               | Default                     | Desc                                                                                                                                 |
+| ----------------------- | ------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| containerSelector       | string             | "\[data-moodal-container\]" | Selector for the element appended content                                                                                            |
+| hideOnClickSelector     | string             | "\[data-moodal-close\]"     | Selector for elements that close modal when clicked                                                                                  |
+| noBackgroundScroll      | boolean            | false                       | if true, fix scrolling element                                                                                                       |
+| backgroundElement       | HTMLElement        | undefined                   | The element you want to stop scrolling. ex. `document.querySelector(".page-wrapper")` <br>\* require if `noBackgroundScroll` is true |
+| waitContentLoaded       | boolean            | true                        | if true, the modal is shown after `<img>` or `<iframe>` element is loaded.                                                           |
+| stateClasses            | Object             |                             | Classes for showing / loading state                                                                                                  |
+| stateClasses.isVissible | string \| string[] | is-vissible                 | Class on showing modal                                                                                                               |
+| stateClasses.isLoading  | string \| string[] | is-loading                  | Class on loading modal                                                                                                               |
+| logLevel                | number             | 2                           | 0 = off, 1 = error, 2 = warning, 3 = info, 4 = debug                                                                                 |
+| enableFocusTrap         | boolean            | true                        | Trap focus within a modal container on showing                                                                                       |
+| hideByEscKey            | boolean            | true                        | Hide modadal using the ESC Key                                                                                                       |
 
 ## Controller Params
 
 ```js
 myModal.addController({
-    getContent: trigger => {
-        // You must make content element form `trigger`
-        // ...some code
-        return content; // return HTMLElement
-    },
-    controllerAttr: 'data-modal-control'
+  getContent: (trigger) => {
+    // You must make content element form `trigger`
+    // ...some code
+    return content; // return HTMLElement
+  },
+  controllerAttr: 'data-modal-control',
 });
 ```
 
