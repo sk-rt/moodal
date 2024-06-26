@@ -9,7 +9,8 @@
     ".": {
       "require": "./lib/cjs/index.js",
       "import": "./lib/esm/index.mjs"
-    }
+    },
+    "./lib/": "./lib/"
   },
   "author": "sk-rt",
   "license": "MIT",
